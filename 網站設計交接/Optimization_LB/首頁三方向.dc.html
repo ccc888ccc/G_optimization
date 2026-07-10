@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#e8e6e0;font-family:'Noto Sans TC',sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}a:hover{opacity:.7}
+.stage{display:flex;flex-wrap:wrap;align-items:flex-start;gap:44px;padding:52px 48px 80px}
+.opt{width:760px;background:var(--bg);color:var(--ink);font-family:var(--fb);border-radius:var(--radius);box-shadow:0 1px 0 rgba(0,0,0,.04),0 24px 60px -30px rgba(30,25,20,.35);overflow:hidden}
+.optbar{display:flex;align-items:baseline;gap:12px;padding:14px 22px;background:var(--ink);color:var(--bg)}
+.optbar .oid{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;background:var(--accent);color:#fff;padding:2px 8px;border-radius:100px}
+.optbar .onm{font-weight:600;font-size:14px;font-family:var(--fh)}
+.optbar .otg{margin-left:auto;font-size:12px;opacity:.7;font-family:'JetBrains Mono',monospace}
+.pad{padding:0 34px}
+.site{display:flex;align-items:center;gap:20px;padding:20px 34px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:11px}
+.mark{width:30px;height:30px;border-radius:7px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:15px}
+.bname{font-family:var(--fh);font-weight:700;font-size:16px;line-height:1}
+.bsub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;margin-top:3px}
+.nav{display:flex;gap:16px;margin-left:8px}
+.navlink{font-family:var(--fn);font-size:13px;color:var(--muted);font-weight:500}
+.navlink.on{color:var(--ink)}
+.tools{margin-left:auto;display:flex;align-items:center;gap:8px}
+.searchbox{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:100px;padding:6px 12px;color:var(--muted);font-size:12px;background:var(--surface)}
+.icb{width:33px;height:33px;border-radius:9px;border:1px solid var(--line);background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.hero{padding:44px 34px 34px}
+.eyebrow{font-family:var(--fn);font-size:12px;letter-spacing:.12em;color:var(--accent);font-weight:600;text-transform:uppercase}
+.htitle{font-family:var(--fh);font-weight:700;font-size:38px;line-height:1.22;margin:16px 0 0;letter-spacing:-.01em;max-width:16ch}
+.hsub{color:var(--muted);font-size:16px;line-height:1.85;margin:18px 0 0;max-width:58ch}
+.hcta{display:flex;gap:12px;margin-top:26px}
+.btn{font-family:var(--fn);font-weight:600;font-size:14px;padding:11px 20px;border-radius:var(--radius);background:var(--accent);color:#fff;border:1px solid var(--accent)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.sec{padding:34px 34px}
+.sechead{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px}
+.sectitle{font-family:var(--fh);font-weight:700;font-size:20px}
+.seclabel{font-family:var(--fn);font-size:11px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;font-weight:600;margin-bottom:6px}
+.more{font-family:var(--fn);font-size:13px;color:var(--accent);font-weight:600}
+.paths{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.path{border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px;background:var(--surface);display:flex;flex-direction:column;gap:0}
+.pnum{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--accent);border:1px solid var(--accent-soft);background:var(--accent-soft);width:fit-content;padding:2px 9px;border-radius:100px}
+.ptitle{font-family:var(--fh);font-weight:700;font-size:17px;margin:14px 0 8px}
+.psub{color:var(--muted);font-size:13.5px;line-height:1.7;flex:1}
+.pmeta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.demo{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+.demohd{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line)}
+.demoname{font-family:var(--fh);font-weight:700;font-size:16px;display:flex;align-items:center;gap:9px}
+.livedot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.demotag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.mediawrap{position:relative;height:250px;background:var(--bg)}
+.demo-canvas{width:100%;height:100%;display:block}
+.axlab{position:absolute;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.democtl{display:flex;align-items:center;gap:16px;padding:14px 18px;border-top:1px solid var(--line)}
+.sldwrap{display:flex;align-items:center;gap:10px;flex:1}
+.sldlab{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink);white-space:nowrap;min-width:76px}
+input[type=range]{-webkit-appearance:none;appearance:none;height:4px;border-radius:4px;background:var(--line);flex:1;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--surface);box-shadow:0 0 0 1px var(--accent)}
+.replay{font-family:var(--fn);font-size:12.5px;font-weight:600;color:var(--accent);border:1px solid var(--line);background:var(--surface);border-radius:100px;padding:7px 15px;cursor:pointer}
+.caption{font-family:var(--fb);font-size:13px;color:var(--muted);line-height:1.7;padding:0 18px 16px}
+.feat{display:grid;grid-template-columns:1.15fr 1fr;gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+.featbody{padding:26px 24px}
+.metarow{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:14px}
+.feattitle{font-family:var(--fh);font-weight:700;font-size:24px;line-height:1.35;margin:0 0 12px;letter-spacing:-.01em}
+.featex{color:var(--muted);font-size:14.5px;line-height:1.85;margin:0}
+.tagrow{display:flex;gap:7px;margin-top:18px;flex-wrap:wrap}
+.tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);background:var(--bg);border:1px solid var(--line);padding:3px 9px;border-radius:4px}
+.featside{background:var(--bg);border-left:1px solid var(--line);padding:26px 22px;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.fsl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.fskel{height:1px}
+.readtime{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
+.list{display:flex;flex-direction:column}
+.art{display:flex;align-items:center;gap:16px;padding:16px 4px;border-bottom:1px solid var(--line)}
+.artmain{flex:1;min-width:0}
+.arttitle{font-family:var(--fh);font-weight:600;font-size:16px;line-height:1.5;margin:0 0 8px}
+.artmeta{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.artdate{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:3px 10px;border-radius:100px;font-family:var(--fn);line-height:1.5}
+.type{display:inline-flex;font-size:11px;font-weight:500;letter-spacing:.03em;padding:2px 9px;border:1px solid var(--line);border-radius:100px;color:var(--muted);font-family:var(--fn)}
+.b-fnd{color:#4b5563;background:#eceef1}.b-lp{color:#1d4ed8;background:#e7edfd}.b-ip{color:#6d28d9;background:#efe9fd}.b-nlp{color:#0f766e;background:#e2f2f0}.b-sp{color:#b45309;background:#fbeede}.b-sip{color:#92400e;background:#f6e9dc}.b-dp{color:#be185d;background:#fbe6ef}.b-dec{color:#4338ca;background:#e9e8fb}.b-tool{color:#047857;background:#e0f1ea}
+.doms{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.dom{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-radius:var(--radius);font-family:var(--fn)}
+.domn{font-weight:600;font-size:14px}
+.dome{font-family:'JetBrains Mono',monospace;font-size:10px;opacity:.7;margin-top:2px}
+.domc{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;opacity:.85}
+.foot{border-top:1px solid var(--line);padding:26px 34px;display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:12.5px}
+.footlinks{display:flex;gap:16px;font-family:var(--fn)}
+.foot .c{font-family:'JetBrains Mono',monospace;font-size:11px}
+.optA{--bg:#faf7f0;--surface:#fffdf8;--ink:#2b2621;--muted:#7d7365;--line:#e8ded0;--accent:#8a3324;--accent-soft:#f2e5df;--fb:'Noto Serif TC',serif;--fh:'Noto Serif TC',serif;--fn:'Noto Serif TC',serif;--radius:4px}
+.optA .eyebrow,.optA .seclabel{font-style:italic;text-transform:none;letter-spacing:.02em}
+.optB{--bg:#f6f7f9;--surface:#ffffff;--ink:#1a1d24;--muted:#697086;--line:#e5e8ef;--accent:#3b5bdb;--accent-soft:#e9edfc;--fb:'Noto Sans TC',sans-serif;--fh:'Noto Sans TC',sans-serif;--fn:'Noto Sans TC',sans-serif;--radius:14px}
+.optC{--bg:#f4f6f4;--surface:#ffffff;--ink:#182420;--muted:#5e6c63;--line:#dce5df;--accent:#1f7a5c;--accent-soft:#e2efe9;--fb:'Noto Serif TC',serif;--fh:'Noto Sans TC',sans-serif;--fn:'JetBrains Mono',monospace;--radius:5px}
+.optC .navlink,.optC .eyebrow,.optC .seclabel{text-transform:uppercase;letter-spacing:.1em;font-size:11px}
+</style>
+</helmet>
+<div class="stage">
+<sc-for list="{{ options }}" as="opt" hint-placeholder-count="3">
+<section class="opt {{ opt.cls }}" id="{{ opt.id }}">
+<div class="optbar"><span class="oid">{{ opt.id }}</span><span class="onm">{{ opt.name }}</span><span class="otg">{{ opt.tagline }}</span></div>
+<div class="site">
+<a class="brand"><span class="mark">∇f</span><span><div class="bname">最佳化啟示錄</div><div class="bsub">OPTIMIZATION · ILLUSTRATED</div></span></a>
+<nav class="nav"><a class="navlink on">首頁</a><a class="navlink">學習路徑</a><a class="navlink">各領域</a><a class="navlink">每週問題</a><a class="navlink">速查</a></nav>
+<div class="tools"><span class="searchbox">⌕ 搜尋概念 / 公式</span><span class="icb">◐</span></div>
+</div>
+<div class="hero">
+<div class="eyebrow">教學 · 互動 · 持續更新</div>
+<h1 class="htitle">把抽象的最佳化，畫成看得懂的幾何。</h1>
+<p class="hsub">從凸集、對偶到單體法與分支定界——每個概念先給直覺與動畫，再進入嚴謹證明。中英數混排、可摺疊證明、深色模式，為長時間閱讀而生。</p>
+<div class="hcta"><a class="btn">開始學習路徑 →</a><a class="btn ghost">瀏覽所有領域</a></div>
+</div>
+<div class="sec">
+<div class="sechead"><div><div class="seclabel">三條動線</div><div class="sectitle">選一條學習路徑</div></div><a class="more">全部路徑 →</a></div>
+<div class="paths"><sc-for list="{{ paths }}" as="p" hint-placeholder-count="3"><div class="path"><span class="pnum">{{ p.k }}</span><div class="ptitle">{{ p.t }}</div><div class="psub">{{ p.s }}</div><div class="pmeta">{{ p.m }}</div></div></sc-for></div>
+</div>
+<div class="sec">
+<div class="sechead"><div><div class="seclabel">互動元件容器</div><div class="sectitle">概念會動起來</div></div><a class="more">視覺化清單 →</a></div>
+<div class="demo">
+<div class="demohd"><div class="demoname"><span class="livedot"></span>梯度下降 · 在細長的碗上震盪</div><span class="demotag">D3 / Canvas island</span></div>
+<div class="mediawrap"><canvas class="demo-canvas" ref="{{ opt.ref }}"></canvas><span class="axlab" style="left:12px;top:10px">f(x, y) = 0.15x² + 0.6y²</span></div>
+<div class="democtl"><div class="sldwrap"><span class="sldlab">學習率 {{ lrText }}</span><input type="range" min="0.1" max="1.85" step="0.05" value="{{ lr }}" onInput="{{ onLr }}"></div><button class="replay" onClick="{{ onReplay }}">↻ 重新播放</button></div>
+<p class="caption">在條件數大的問題上，梯度下降會沿著山谷來回震盪。調高學習率 η 看它如何加速收斂——再高一點，就會發散。這就是文章頁裡「互動元件容器」的樣式：置中、含圖說、可全螢幕。</p>
+</div>
+</div>
+<div class="sec">
+<div class="sechead"><div><div class="seclabel">精選</div><div class="sectitle">編輯精選</div></div></div>
+<div class="feat">
+<div class="featbody"><div class="metarow"><span class="badge {{ featured.db }}">{{ featured.d }}</span><span class="type">{{ featured.ty }}</span></div><h3 class="feattitle">{{ featured.t }}</h3><p class="featex">{{ featured.ex }}</p><div class="tagrow"><sc-for list="{{ featured.tags }}" as="t" hint-placeholder-count="3"><span class="tag">#{{ t }}</span></sc-for></div></div>
+<div class="featside"><div class="fsl">附完整證明 · 可摺疊</div><div class="readtime">◷ 閱讀 {{ featured.r }}</div><div class="readtime">互動圖 · 拖曳分離超平面</div><a class="btn" style="margin-top:6px">閱讀全文 →</a></div>
+</div>
+</div>
+<div class="sec">
+<div class="sechead"><div><div class="seclabel">最新</div><div class="sectitle">最近更新</div></div><a class="more">全部文章 →</a></div>
+<div class="list"><sc-for list="{{ latest }}" as="a" hint-placeholder-count="5"><div class="art"><div class="artmain"><h4 class="arttitle">{{ a.t }}</h4><div class="artmeta"><span class="badge {{ a.db }}">{{ a.d }}</span><span class="type">{{ a.ty }}</span><span class="artdate">{{ a.dt }} · {{ a.r }}</span></div></div></div></sc-for></div>
+</div>
+<div class="sec">
+<div class="sechead"><div><div class="seclabel">九大領域</div><div class="sectitle">依領域瀏覽</div></div></div>
+<div class="doms"><sc-for list="{{ domains }}" as="d" hint-placeholder-count="9"><a class="dom {{ d.b }}"><span><div class="domn">{{ d.n }}</div><div class="dome">{{ d.e }}</div></span><span class="domc">{{ d.c }}</span></a></sc-for></div>
+</div>
+<div class="foot"><span class="c">© 2026 最佳化啟示錄 · 內容 CC BY-NC 轉載須註明來源</span><div class="footlinks"><a>RSS</a><a>GitHub</a><a>回到頂部 ↑</a></div></div>
+</section>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { lr: 0.85 };
+  palettes = {
+    A: { bg:'#fffdf8', line:'#e6dac6', accent:'#8a3324', dim:'#cda69c' },
+    B: { bg:'#ffffff', line:'#e2e6ee', accent:'#3b5bdb', dim:'#aab4e8' },
+    C: { bg:'#ffffff', line:'#dae7df', accent:'#1f7a5c', dim:'#9ec7b6' }
+  };
+  canvases = {};
+
+  refA = (el) => this._ref('A', el);
+  refB = (el) => this._ref('B', el);
+  refC = (el) => this._ref('C', el);
+
+  _ref(key, el) {
+    if (el) { this.canvases[key] = { el, ctx: el.getContext('2d') }; if (!this.raf) this.loop(); }
+    else { delete this.canvases[key]; }
+  }
+
+  componentDidMount() { this.computePath(); this.progress = 0; this.hold = 0; }
+  componentWillUnmount() { if (this.raf) cancelAnimationFrame(this.raf); }
+  setLr(v) { this.setState({ lr: v }, () => { this.computePath(); this.progress = 0; this.hold = 0; }); }
+
+  computePath() {
+    const a = 0.3, b = 1.2, cx = 1, cy = 0, lr = this.state.lr;
+    let x = -8, y = 4.6; const pts = [{ x, y }];
+    for (let i = 0; i < 70; i++) {
+      x -= lr * a * (x - cx); y -= lr * b * (y - cy);
+      pts.push({ x, y });
+      if (!isFinite(x) || Math.abs(x) > 80 || Math.abs(y) > 80) break;
+    }
+    this.path = pts;
+  }
+
+  loop = () => {
+    const p = this.path || [];
+    const maxIdx = p.length - 1;
+    if (this.progress === undefined) this.progress = 0;
+    if (this.progress >= maxIdx) { this.hold++; if (this.hold > 55) { this.progress = 0; this.hold = 0; } }
+    else this.progress += 0.045;
+    for (const k in this.canvases) this.draw(this.canvases[k], this.palettes[k]);
+    this.raf = requestAnimationFrame(this.loop);
+  };
+
+  draw(cv, pal) {
+    if (!this.path || !this.path.length) return;
+    const el = cv.el, ctx = cv.ctx;
+    const rect = el.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    const W = Math.round(rect.width * dpr), H = Math.round(rect.height * dpr);
+    if (!W || !H) return;
+    if (el.width !== W) { el.width = W; el.height = H; }
+    const pad = 6 * dpr;
+    const xmin = -9, xmax = 11, ymin = -6.5, ymax = 6.5;
+    const px = (x) => pad + (x - xmin) / (xmax - xmin) * (W - 2 * pad);
+    const py = (y) => H - pad - (y - ymin) / (ymax - ymin) * (H - 2 * pad);
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = pal.bg; ctx.fillRect(0, 0, W, H);
+    // contours
+    const a = 0.3, b = 1.2, cx = 1, cy = 0;
+    const cxp = px(cx), cyp = py(cy);
+    ctx.lineWidth = 1 * dpr;
+    const levels = [1, 4, 9, 16, 25, 36, 49, 64];
+    for (const L of levels) {
+      const rx = Math.sqrt(2 * L / a) / (xmax - xmin) * (W - 2 * pad);
+      const ry = Math.sqrt(2 * L / b) / (ymax - ymin) * (H - 2 * pad);
+      ctx.beginPath(); ctx.ellipse(cxp, cyp, rx, ry, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = pal.line; ctx.stroke();
+    }
+    // minimum marker
+    ctx.strokeStyle = pal.dim; ctx.lineWidth = 1.5 * dpr;
+    ctx.beginPath(); ctx.moveTo(cxp - 5 * dpr, cyp); ctx.lineTo(cxp + 5 * dpr, cyp);
+    ctx.moveTo(cxp, cyp - 5 * dpr); ctx.lineTo(cxp, cyp + 5 * dpr); ctx.stroke();
+    // path
+    const path = this.path || [];
+    const maxIdx = path.length - 1;
+    const idx = Math.min(Math.floor(this.progress), maxIdx);
+    let cur;
+    if (idx < maxIdx) { const f = this.progress - idx; cur = { x: path[idx].x + (path[idx + 1].x - path[idx].x) * f, y: path[idx].y + (path[idx + 1].y - path[idx].y) * f }; }
+    else cur = path[maxIdx];
+    ctx.strokeStyle = pal.accent; ctx.globalAlpha = 0.55; ctx.lineWidth = 2 * dpr;
+    ctx.beginPath(); ctx.moveTo(px(path[0].x), py(path[0].y));
+    for (let i = 1; i <= idx; i++) ctx.lineTo(px(path[i].x), py(path[i].y));
+    ctx.lineTo(px(cur.x), py(cur.y)); ctx.stroke();
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = pal.accent;
+    for (let i = 0; i <= idx; i++) { ctx.globalAlpha = 0.4; ctx.beginPath(); ctx.arc(px(path[i].x), py(path[i].y), 2.4 * dpr, 0, Math.PI * 2); ctx.fill(); }
+    ctx.globalAlpha = 1;
+    // current point
+    ctx.beginPath(); ctx.arc(px(cur.x), py(cur.y), 5.5 * dpr, 0, Math.PI * 2); ctx.fillStyle = pal.accent; ctx.fill();
+    ctx.lineWidth = 2 * dpr; ctx.strokeStyle = pal.bg; ctx.stroke();
+  }
+
+  renderVals() {
+    const lr = this.state.lr;
+    return {
+      lr,
+      lrText: 'η = ' + lr.toFixed(2),
+      onLr: (e) => this.setLr(+e.target.value),
+      onReplay: () => { this.progress = 0; this.hold = 0; },
+      options: [
+        { id: '1a', cls: 'optA', name: '書卷 · 學術期刊', tagline: 'Noto Serif TC · 暖白 · 磚紅', ref: this.refA },
+        { id: '1b', cls: 'optB', name: '現代簡約', tagline: 'Noto Sans TC · 冷白 · 學術藍', ref: this.refB },
+        { id: '1c', cls: 'optC', name: '技術文件', tagline: '黑體標題＋宋體內文 · 等寬 · 墨綠', ref: this.refC }
+      ],
+      paths: [
+        { k: '01', t: '大學部入門', s: '從向量、凸集到 LP 幾何與單體法，建立直覺主幹。', m: '18 篇 · 約 6 週' },
+        { k: '02', t: '研究所進階', s: '凸分析、KKT、對偶理論到 SP／SIP 與分解方法。', m: '27 篇 · 約 10 週' },
+        { k: '03', t: '快速複習', s: '每領域只挑觀念與定理速查，搭配公式卡片。', m: '速查 · 隨時查' }
+      ],
+      featured: { t: '分離超平面定理', d: '基礎數學', db: 'b-fnd', ty: '證明', ex: '兩個不相交的凸集，必存在一張超平面把它們分開。本文從幾何直覺出發，給出完整無跳步的證明，並用互動圖演示分離的過程。', tags: ['凸集', '分離定理', 'normal cone'], r: '14 分鐘' },
+      latest: [
+        { t: '單體法：在多面體頂點間移動', d: 'LP', db: 'b-lp', ty: '方法', dt: '7 月 8 日', r: '18 min' },
+        { t: '凸集與凸函數：極點與凸包', d: '基礎數學', db: 'b-fnd', ty: '觀念', dt: '7 月 3 日', r: '11 min' },
+        { t: 'KKT 條件的幾何：梯度落在 normal cone', d: 'NLP', db: 'b-nlp', ty: '觀念', dt: '6 月 27 日', r: '15 min' },
+        { t: 'Benders 分解與 L-shaped 方法', d: '分解與對偶', db: 'b-dec', ty: '方法', dt: '6 月 21 日', r: '20 min' },
+        { t: '分支定界：搜尋樹的展開與剪枝', d: 'IP · BIP', db: 'b-ip', ty: '方法', dt: '6 月 14 日', r: '16 min' }
+      ],
+      domains: [
+        { n: '基礎數學', e: 'Foundations', c: 14, b: 'b-fnd' },
+        { n: 'LP 線性規劃', e: 'Linear', c: 12, b: 'b-lp' },
+        { n: 'IP · BIP', e: 'Integer', c: 11, b: 'b-ip' },
+        { n: 'NLP 非線性', e: 'Nonlinear', c: 16, b: 'b-nlp' },
+        { n: 'SP 隨機規劃', e: 'Stochastic', c: 9, b: 'b-sp' },
+        { n: 'SIP 隨機整數', e: 'Stoch. Integer', c: 6, b: 'b-sip' },
+        { n: 'DP 動態規劃', e: 'Dynamic', c: 8, b: 'b-dp' },
+        { n: '分解與對偶', e: 'Decomposition', c: 7, b: 'b-dec' },
+        { n: '工具與計算', e: 'Tools', c: 5, b: 'b-tool' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

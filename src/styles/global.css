@@ -1,0 +1,105 @@
+@import 'tailwindcss';
+
+/* 深色模式：class 策略（html.dark），非 media。 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── 設計 Token（亮色）──────────────────────────────
+   所有元件以這些 CSS 變數吃色，切 .dark 即整站換色。 */
+:root {
+  --bg: #faf7f0;
+  --surface: #fffdf8;
+  --ink: #2b2621;
+  --muted: #7d7365;
+  --faint: #a8a091;
+  --line: #e8ded0;
+  --accent: #8a3324;
+  --soft: #f2e5df;
+  --code: #f4ede0;
+  --warn: #b45309;
+  --warn-soft: #f8ecd8;
+  --err: #a13a34;
+  --err-soft: #f6e3e0;
+
+  /* 版型 */
+  --measure: 45rem; /* 內文欄寬 ~720px，65–75 字元 */
+  --shadow-card: 0 18px 40px -26px rgba(30, 25, 20, 0.4);
+}
+
+/* ── 設計 Token（深色，偏暖、避免純黑）────────────── */
+.dark {
+  --bg: #201c17;
+  --surface: #282219;
+  --ink: #ece4d5;
+  --muted: #a89e8c;
+  --faint: #7a715f;
+  --line: #3b342a;
+  --accent: #e0a184;
+  --soft: #3a2c22;
+  --code: #1c1813;
+  --warn: #e0a95e;
+  --warn-soft: #3a2f1c;
+  --err: #e69a8f;
+  --err-soft: #3a2620;
+
+  --shadow-card: 0 18px 40px -26px rgba(0, 0, 0, 0.6);
+}
+
+/* ── 把 token 映射成 Tailwind 工具類別 ───────────────
+   → bg-bg / bg-surface / text-ink / text-muted / border-line /
+     text-accent / font-serif ... 皆可用，且吃 CSS 變數。 */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-soft: var(--soft);
+  --color-code: var(--code);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-err: var(--err);
+  --color-err-soft: var(--err-soft);
+
+  --font-serif: 'Noto Serif TC', ui-serif, Georgia, serif;
+  --font-sans: 'Noto Sans TC', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* 圓角：按鈕 4 / 容器·圖 8 / 徽章 100px */
+  --radius-btn: 4px;
+  --radius-box: 8px;
+  --radius-pill: 100px;
+}
+
+/* ── 基礎排版 ───────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* 介面元素（導覽/徽章/圖說）用無襯線 */
+.font-ui {
+  font-family: var(--font-sans);
+}
+
+/* 焦點可視性（無障礙） */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--soft);
+  color: var(--ink);
+}

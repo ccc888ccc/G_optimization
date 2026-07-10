@@ -1,0 +1,22 @@
+---
+import { SITE } from '../config';
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-20 border-t border-line bg-surface">
+  <div
+    class="font-ui mx-auto flex max-w-6xl flex-col gap-4 px-4 py-10 text-sm text-muted sm:flex-row sm:items-center sm:justify-between sm:px-6"
+  >
+    <div class="space-y-1">
+      <p class="font-serif text-base font-semibold text-ink">{SITE.name}</p>
+      <p>© {year} {SITE.author}．內容採 <a class="text-accent hover:underline" href="https://creativecommons.org/licenses/by-nc/4.0/deed.zh-hant" rel="license">CC BY-NC 4.0</a> 授權</p>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <a class="hover:text-accent" href="/rss.xml">RSS</a>
+      <!-- TODO(G): 換成實際 GitHub repo 連結 -->
+      <a class="hover:text-accent" href="https://github.com" rel="noopener" target="_blank">GitHub</a>
+      <a class="hover:text-accent" href="#top">回頂 ↑</a>
+    </div>
+  </div>
+</footer>

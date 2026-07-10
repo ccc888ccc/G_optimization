@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+body{margin:0}
+.doc{--bg:#faf7f0;--surface:#fffdf8;--ink:#2b2621;--muted:#7d7365;--faint:#a8a091;--line:#e8ded0;--accent:#8a3324;--accent-soft:#f2e5df;--code-bg:#f4ede0;--warn:#b45309;--warn-soft:#f8ecd8;--err:#a13a34;--err-soft:#f6e3e0;font-family:'Noto Serif TC',serif;background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+.doc.dark{--bg:#201c17;--surface:#282219;--ink:#ece4d5;--muted:#a89e8c;--faint:#7a715f;--line:#3b342a;--accent:#e0a184;--accent-soft:#3a2c22;--code-bg:#1c1813;--warn:#e0a95e;--warn-soft:#3a2f1c;--err:#e69a8f;--err-soft:#3a2620}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:'JetBrains Mono',monospace}
+.sans{font-family:'Noto Sans TC',sans-serif}
+.site{display:flex;align-items:center;gap:20px;padding:16px 40px;border-bottom:1px solid var(--line);background:var(--surface);position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:11px}
+.mark{width:30px;height:30px;border-radius:7px;background:var(--accent);color:var(--surface);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:15px}
+.bname{font-weight:700;font-size:16px;line-height:1}
+.bsub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em;margin-top:3px}
+.nav{display:flex;gap:16px;margin-left:8px}
+.navlink{font-size:13px;color:var(--muted);font-weight:500}.navlink.on{color:var(--ink)}
+.tools{margin-left:auto;display:flex;align-items:center;gap:8px}
+.searchbox{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:100px;padding:6px 12px;color:var(--muted);font-size:12px;background:var(--bg)}
+.icb{width:33px;height:33px;border-radius:9px;border:1px solid var(--line);background:var(--bg);display:flex;align-items:center;justify-content:center;color:var(--muted);cursor:pointer;font-size:15px}
+.page{max-width:1120px;margin:0 auto;padding:0 40px}
+.crumb{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);padding:22px 0 0;display:flex;gap:8px;flex-wrap:wrap}
+.crumb a:hover{text-decoration:none;color:var(--accent)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 232px;gap:56px;align-items:start;padding:8px 0 60px}
+.body{min-width:0;max-width:720px}
+.metarow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:26px 0 0}
+.badge{display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:3px 11px;border-radius:100px;font-family:'Noto Sans TC',sans-serif;line-height:1.5}
+.type{display:inline-flex;font-size:11px;font-weight:600;letter-spacing:.02em;padding:2px 10px;border-radius:100px;font-family:'Noto Sans TC',sans-serif}
+.b-nlp{color:#0f766e;background:#e2f2f0}
+.dark .b-nlp{color:#7fd8cd;background:#173a36}
+.t-method{color:#8a3324;background:transparent;border:1px solid var(--accent)}
+.title{font-size:42px;font-weight:700;line-height:1.25;letter-spacing:-.015em;margin:20px 0 0}
+.lead{font-size:19px;line-height:1.8;color:var(--muted);margin:18px 0 0;max-width:60ch}
+.byline{display:flex;align-items:center;gap:14px;margin:22px 0 0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--muted)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px}
+.prose{font-size:17px;line-height:1.95}
+.prose p{margin:22px 0}
+.prose h2{font-size:26px;font-weight:700;line-height:1.4;margin:52px 0 8px;letter-spacing:-.01em;scroll-margin-top:80px}
+.prose h2 .num{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--accent);margin-right:12px;font-weight:600}
+.prose h3{font-size:19px;font-weight:600;margin:34px 0 6px}
+.prose strong{font-weight:700}
+.prose em{color:var(--accent);font-style:normal;font-weight:500}
+.callout{border-radius:8px;padding:16px 20px;margin:26px 0;font-size:15.5px;line-height:1.8;border:1px solid var(--line);display:flex;gap:14px}
+.callout .cico{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:13px;flex-shrink:0;padding:2px 0}
+.callout .clab{font-weight:700;display:block;margin-bottom:3px;font-family:'Noto Sans TC',sans-serif;font-size:13px;letter-spacing:.03em}
+.c-intu{background:var(--accent-soft);border-color:var(--accent-soft)}.c-intu .cico,.c-intu .clab{color:var(--accent)}
+.c-warn{background:var(--warn-soft);border-color:var(--warn-soft)}.c-warn .cico,.c-warn .clab{color:var(--warn)}
+.c-mis{background:var(--err-soft);border-color:var(--err-soft)}.c-mis .cico,.c-mis .clab{color:var(--err)}
+.eq{position:relative;margin:26px 0;padding:20px 16px;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow-x:auto}
+.eqcopy{position:absolute;top:8px;right:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:3px 8px;cursor:pointer;opacity:0;transition:opacity .15s}
+.eq:hover .eqcopy{opacity:1}
+.eqcopy:hover{color:var(--accent);border-color:var(--accent)}
+.demo{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface);margin:30px 0}
+.demohd{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(--line)}
+.demoname{font-weight:700;font-size:15px;display:flex;align-items:center;gap:9px}
+.livedot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.demotag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.expand{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:4px 9px;cursor:pointer;background:var(--bg)}
+.mediawrap{position:relative;height:280px;background:var(--bg)}
+.demo-canvas{width:100%;height:100%;display:block}
+.loadstate{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--faint);background:var(--bg);gap:8px}
+.axlab{position:absolute;left:14px;top:12px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.democtl{display:flex;align-items:center;gap:16px;padding:13px 18px;border-top:1px solid var(--line)}
+.sldwrap{display:flex;align-items:center;gap:10px;flex:1}
+.sldlab{font-family:'JetBrains Mono',monospace;font-size:12px;white-space:nowrap;min-width:74px}
+input[type=range]{-webkit-appearance:none;appearance:none;height:4px;border-radius:4px;background:var(--line);flex:1;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--surface);box-shadow:0 0 0 1px var(--accent)}
+.replay{font-family:'Noto Sans TC',sans-serif;font-size:12.5px;font-weight:600;color:var(--accent);border:1px solid var(--line);background:var(--bg);border-radius:100px;padding:7px 15px;cursor:pointer}
+.caption{font-size:13.5px;color:var(--muted);line-height:1.7;padding:12px 18px 16px;border-top:1px solid var(--line)}
+.caption b{color:var(--ink);font-weight:600}
+.proof{margin:26px 0;border:1px solid var(--line);border-radius:8px;background:var(--surface);overflow:hidden}
+.proof summary{cursor:pointer;padding:15px 20px;font-weight:600;font-size:15px;list-style:none;display:flex;align-items:center;gap:10px;font-family:'Noto Sans TC',sans-serif}
+.proof summary::-webkit-details-marker{display:none}
+.proof summary .tri{font-family:'JetBrains Mono',monospace;color:var(--accent);transition:transform .2s}
+.proof[open] summary .tri{transform:rotate(90deg)}
+.proof summary .plab{color:var(--muted);font-weight:500;font-size:12px;margin-left:auto;font-family:'JetBrains Mono',monospace}
+.proofbody{padding:4px 20px 20px;border-top:1px solid var(--line);font-size:16px;line-height:1.9}
+.proofbody .qed{text-align:right;color:var(--accent);font-family:'JetBrains Mono',monospace}
+.codeblock{margin:26px 0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--code-bg)}
+.codehd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted)}
+.copybtn{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:5px;padding:3px 9px;cursor:pointer}
+.copybtn:hover{color:var(--accent);border-color:var(--accent)}
+pre{margin:0;padding:16px 18px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.75}
+.kw{color:#a13a34}.dark .kw{color:#e69a8f}
+.fn{color:#8a5a10}.dark .fn{color:#d6a24e}
+.str{color:#3f7d4e}.dark .str{color:#8fc79b}
+.com{color:var(--faint);font-style:italic}
+.num{color:#6d28d9}.dark .num{color:#c3a5f0}
+.dtable{width:100%;border-collapse:collapse;margin:26px 0;font-size:14.5px}
+.dtable th{text-align:left;font-family:'Noto Sans TC',sans-serif;font-size:12px;letter-spacing:.03em;color:var(--muted);border-bottom:2px solid var(--line);padding:10px 12px;font-weight:700}
+.dtable td{border-bottom:1px solid var(--line);padding:11px 12px;line-height:1.6}
+.dtable td:first-child{font-weight:600}
+.figph{margin:26px 0;border:1px dashed var(--line);border-radius:8px;height:200px;background:repeating-linear-gradient(45deg,transparent,transparent 9px,var(--accent-soft) 9px,var(--accent-soft) 10px);display:flex;align-items:center;justify-content:center}
+.figph span{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);background:var(--surface);padding:6px 12px;border-radius:6px;border:1px solid var(--line)}
+.related{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0}
+.rcard{border:1px solid var(--line);border-radius:8px;padding:18px;background:var(--surface)}
+.rcard .rt{font-weight:600;font-size:16px;line-height:1.5;margin:10px 0 6px}
+.rcard .rx{font-size:13px;color:var(--muted);line-height:1.6}
+.pnav{display:flex;justify-content:space-between;gap:14px;margin:30px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0}
+.pnav .pn{flex:1}
+.pnav .pn.next{text-align:right}
+.pnav .pk{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.pnav .pv{font-weight:600;font-size:15.5px;margin-top:5px;color:var(--ink)}
+.comments{margin:40px 0 0;padding:28px 0 0;border-top:1px solid var(--line)}
+.giscus{border:1px dashed var(--line);border-radius:8px;padding:34px;text-align:center;color:var(--muted);background:var(--surface)}
+.giscus .gi{font-size:22px;margin-bottom:8px}
+.giscus .gsub{font-size:13px;margin-top:6px;font-family:'JetBrains Mono',monospace}
+.toc{position:sticky;top:88px;font-size:13.5px}
+.toclab{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
+.tl{display:block;padding:6px 0 6px 14px;border-left:2px solid var(--line);color:var(--muted);line-height:1.5}
+.tl.on{border-color:var(--accent);color:var(--accent);font-weight:600}
+.tl:hover{color:var(--ink);text-decoration:none}
+.tocmeta{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);line-height:1.9}
+.tocmeta .tb{display:flex;justify-content:space-between}
+.secend{height:1px}
+.foot{border-top:1px solid var(--line);padding:26px 40px;display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:12.5px;background:var(--surface)}
+.footlinks{display:flex;gap:16px}.footlinks a{color:var(--muted)}
+.foot .c{font-family:'JetBrains Mono',monospace;font-size:11px}
+.hamb{display:none;width:33px;height:33px;border-radius:9px;border:1px solid var(--line);background:var(--bg);align-items:center;justify-content:center;color:var(--muted);cursor:pointer;font-size:16px}
+.tocbar{display:none}
+.tocbtn{width:100%;text-align:left;font-family:'Noto Sans TC',sans-serif;font-weight:600;font-size:14px;padding:11px 16px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);cursor:pointer;display:flex;align-items:center;gap:10px}
+.tocbtn .ta{margin-left:auto;font-family:'JetBrains Mono',monospace;color:var(--accent)}
+@media(max-width:860px){
+.site{position:relative;flex-wrap:wrap;padding:14px 22px;gap:14px}
+.nav{display:none}
+.nav.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--line);padding:12px 22px;gap:8px;z-index:30;align-items:flex-start;margin:0}
+.searchbox{display:none}
+.hamb{display:flex}
+.page{padding:0 22px}
+.crumb{padding-top:18px}
+.layout{display:flex;flex-direction:column;gap:0;padding:6px 0 50px}
+.body{order:2;max-width:100%}
+.toc{order:1;position:static;display:none;border:1px solid var(--line);border-radius:8px;padding:10px 16px 14px;margin:8px 0 20px;background:var(--surface);top:auto}
+.toc.open{display:block}
+.tocbar{display:block;order:0;margin:16px 0 0}
+.title{font-size:30px}
+.lead{font-size:17px}
+.prose h2{font-size:22px}
+.related{grid-template-columns:1fr}
+.byline{flex-wrap:wrap;gap:8px;row-gap:6px}
+}
+@media(max-width:560px){
+.title{font-size:25px}
+.prose{font-size:16px}
+.demohd{flex-wrap:wrap;gap:8px}
+.democtl{flex-wrap:wrap;gap:12px}
+.sldwrap{flex-basis:100%}
+.pnav{flex-direction:column;gap:16px}
+.pnav .pn.next{text-align:left}
+}
+</style>
+</helmet>
+<div class="doc {{ darkCls }}">
+<div class="site">
+<a class="brand"><span class="mark">∇f</span><span><div class="bname">最佳化啟示錄</div><div class="bsub">OPTIMIZATION · ILLUSTRATED</div></span></a>
+<nav class="nav {{ menuCls }}"><a class="navlink">首頁</a><a class="navlink">學習路徑</a><a class="navlink on">各領域</a><a class="navlink">每週問題</a><a class="navlink">速查</a></nav>
+<div class="tools"><span class="searchbox mono">⌕ 搜尋概念 / 公式</span><button class="icb" onClick="{{ onToggleDark }}" title="深色模式">{{ darkIcon }}</button><button class="hamb" onClick="{{ onMenu }}">☰</button></div>
+</div>
+<div class="page">
+<div class="crumb"><a>首頁</a><span>/</span><a>NLP 非線性規劃</a><span>/</span><span>梯度下降</span></div>
+<div class="layout">
+<div class="tocbar"><button class="tocbtn" onClick="{{ onToc }}">≡ 本頁目錄<span class="ta">{{ tocArrow }}</span></button></div>
+<article class="body" ref="{{ setRoot }}">
+<div class="metarow"><span class="badge b-nlp">NLP 非線性</span><span class="type t-method">方法 · Method</span></div>
+<h1 class="title">梯度下降：在等高線上找到最低點</h1>
+<p class="lead">一句話直覺——站在山坡上，往最陡的下坡方向踏一步，重複到走不動為止，你就到了谷底。</p>
+<div class="byline"><span class="avatar">G</span><span>作者 G</span><span>·</span><span>2026 年 7 月 8 日</span><span>·</span><span>閱讀 18 分鐘</span><span>·</span><span>標籤 #梯度 #收斂 #line-search</span></div>
+<div class="prose">
+<p>在無約束最佳化裡，我們想找一個點 $x^\star$ 使目標函數 $f(x)$ 最小。<strong>梯度下降(gradient descent)</strong> 是最基本、也最能培養幾何直覺的方法：它只用到一階資訊——梯度 $\nabla f$。</p>
+<h2 id="s-intuition"><span class="num">01</span>直覺：往最陡的下坡走</h2>
+<div class="callout c-intu"><span class="cico">✦</span><span><span class="clab">直覺</span>梯度 $\nabla f(x)$ 指向函數<em>上升</em>最快的方向，所以它的反方向 $-\nabla f(x)$ 就是<em>下降</em>最快的方向。沿著它走一小步，函數值必定變小。</span></div>
+<p>把 $f$ 想成一座山，等高線(contour)就是地圖上的等高圈。梯度永遠垂直於等高線、指向外圈；我們要做的，就是逆著它一路往盆地中心走。</p>
+<h2 id="s-algo"><span class="num">02</span>演算法與更新規則</h2>
+<p>給定起點 $x_0$ 與<strong>學習率(step size)</strong> $\eta>0$，反覆套用：</p>
+<div class="eq"><button class="eqcopy mono" onClick="{{ copyEq }}" data-tex="x_{k+1} = x_k - \eta \nabla f(x_k)">⧉ 複製 LaTeX</button><div>$$x_{k+1} = x_k - \eta\,\nabla f(x_k)$$</div></div>
+<p>下面這個互動圖用一個細長的二次碗 $f(x,y)=0.15x^2+0.6y^2$ 演示它。拖動學習率滑桿，看收斂路徑如何改變：</p>
+<div class="demo">
+<div class="demohd"><div class="demoname"><span class="livedot"></span>梯度下降的收斂路徑</div><span class="expand" onClick="{{ onReplay }}">↻ 重播</span></div>
+<div class="mediawrap"><canvas class="demo-canvas" ref="{{ setCanvas }}"></canvas><span class="axlab">f(x, y) = 0.15x² + 0.6y²</span><sc-if value="{{ loading }}" hint-placeholder-val="{{ true }}"><div class="loadstate">◌ 互動元件載入中…</div></sc-if></div>
+<div class="democtl"><div class="sldwrap"><span class="sldlab">學習率 {{ lrText }}</span><input type="range" min="0.1" max="1.85" step="0.05" value="{{ lr }}" onInput="{{ onLr }}"></div><button class="replay" onClick="{{ onReplay }}">↻ 重新播放</button></div>
+<p class="caption">在條件數大的問題上，梯度下降會沿著狹長山谷<b>來回震盪</b>。試著把 η 調到 <b>1.7 以上</b>——步伐太大，反而越走越遠而<b>發散</b>。這是文章頁的「互動元件容器」：置中、含圖說、可全螢幕、附載入狀態。</p>
+</div>
+<div class="callout c-warn"><span class="cico">▲</span><span><span class="clab">注意</span>學習率是成敗關鍵。太小收斂龜速；太大會在谷壁間反彈甚至發散。實務上常用<em>線搜尋(line search)</em>或自適應步長自動挑 $\eta$。</span></div>
+<h2 id="s-conv"><span class="num">03</span>收斂性：走得多快？</h2>
+<p>對<strong>凸(convex)</strong>且梯度 $L$-Lipschitz 連續的 $f$，取固定步長 $\eta=1/L$，梯度下降的函數值誤差以 $O(1/k)$ 收斂：</p>
+<div class="eq"><button class="eqcopy mono" onClick="{{ copyEq }}" data-tex="f(x_k) - f(x^\star) \le \frac{\lVert x_0 - x^\star\rVert^2}{2\eta k}">⧉ 複製 LaTeX</button><div>$$f(x_k) - f(x^\star) \le \frac{\lVert x_0 - x^\star\rVert^2}{2\eta k}$$</div></div>
+<details class="proof"><summary><span class="tri">▸</span>展開完整證明<span class="plab">Proof · 無跳步</span></summary><div class="proofbody">
+<p>由 $L$-Lipschitz 梯度可得下降引理(descent lemma)：對任意 $x,y$，</p>
+<p>$$f(y) \le f(x) + \nabla f(x)^\top (y-x) + \tfrac{L}{2}\lVert y-x\rVert^2.$$</p>
+<p>令 $y=x_{k+1}=x_k-\eta\nabla f(x_k)$、$x=x_k$，並取 $\eta=1/L$，代入整理得</p>
+<p>$$f(x_{k+1}) \le f(x_k) - \tfrac{1}{2L}\lVert\nabla f(x_k)\rVert^2.$$</p>
+<p>再用凸性 $f(x^\star)\ge f(x_k)+\nabla f(x_k)^\top(x^\star-x_k)$，配合上式與 $\eta=1/L$，可證明</p>
+<p>$$f(x_{k+1})-f(x^\star) \le \tfrac{1}{2\eta}\big(\lVert x_k-x^\star\rVert^2 - \lVert x_{k+1}-x^\star\rVert^2\big).$$</p>
+<p>對 $k=0,\dots,K-1$ 求和，右式為望遠鏡級數(telescoping)，加上函數值單調遞減，即得</p>
+<p>$$f(x_K)-f(x^\star) \le \frac{\lVert x_0-x^\star\rVert^2}{2\eta K}.$$</p>
+<p class="qed">∎</p>
+</div></details>
+<p>若進一步假設 $f$ 為 $\mu$-<strong>強凸(strongly convex)</strong>，收斂會加速為<em>線性(幾何)</em>速率 $O(\rho^k)$，其中 $\rho$ 取決於條件數 $\kappa=L/\mu$。</p>
+<h2 id="s-code"><span class="num">04</span>程式實作</h2>
+<p>用 NumPy 幾行就能寫出：</p>
+<div class="codeblock"><div class="codehd"><span>gradient_descent.py</span><button class="copybtn" onClick="{{ copyCode }}">⧉ 複製</button></div><pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="kw">def</span> <span class="fn">gradient_descent</span>(grad_f, x0, eta=<span class="num">0.1</span>, iters=<span class="num">100</span>, tol=<span class="num">1e-6</span>):
+    <span class="str">"""固定步長梯度下降，回傳收斂軌跡。"""</span>
+    x = np.asarray(x0, dtype=<span class="kw">float</span>)
+    path = [x.copy()]
+    <span class="kw">for</span> k <span class="kw">in</span> <span class="fn">range</span>(iters):
+        g = grad_f(x)
+        <span class="kw">if</span> np.linalg.<span class="fn">norm</span>(g) &lt; tol:      <span class="com"># 已到駐點</span>
+            <span class="kw">break</span>
+        x = x - eta * g              <span class="com"># x_{k+1} = x_k - η ∇f</span>
+        path.append(x.copy())
+    <span class="kw">return</span> np.array(path)</code></pre></div>
+<div class="callout c-mis"><span class="cico">✕</span><span><span class="clab">常見誤解</span>「梯度為零就是最小值」——不一定。$\nabla f=0$ 只代表<em>駐點(stationary point)</em>，可能是鞍點或極大值。唯有在<em>凸</em>問題上，駐點才保證是全域最小。</span></div>
+<h3>方法比較</h3>
+<table class="dtable"><thead><tr><th>方法</th><th>用到的資訊</th><th>每步成本</th><th>收斂速率</th></tr></thead><tbody>
+<tr><td>梯度下降</td><td>一階 $\nabla f$</td><td>低</td><td>次線性 / 線性</td></tr>
+<tr><td>牛頓法</td><td>二階 Hessian</td><td>高（解線性系統）</td><td>局部二次</td></tr>
+<tr><td>BFGS</td><td>近似 Hessian</td><td>中</td><td>超線性</td></tr>
+</tbody></table>
+<div class="figph"><span>◧ 建議放：牛頓法 vs 梯度下降 收斂路徑對比圖</span></div>
+<h2 id="s-more"><span class="num">05</span>延伸閱讀</h2>
+<div class="related">
+<a class="rcard"><span class="badge b-nlp">NLP 非線性</span><div class="rt">牛頓法與擬牛頓(BFGS)</div><div class="rx">用二階資訊加速收斂，以及為何實務上偏好擬牛頓。</div></a>
+<a class="rcard"><span class="badge b-nlp">NLP 非線性</span><div class="rt">KKT 條件的幾何</div><div class="rx">從無約束走向約束：梯度為何要落在 normal cone。</div></a>
+</div>
+<div class="pnav"><a class="pn prev"><div class="pk">← 上一篇</div><div class="pv">一階與二階最優性條件</div></a><a class="pn next"><div class="pk">下一篇 →</div><div class="pv">線搜尋與 Wolfe 條件</div></a></div>
+<div class="comments"><div class="toclab">留言討論 · Giscus</div><div class="giscus"><div class="gi">💬</div><div>用 GitHub 帳號登入即可留言、提問</div><div class="gsub">Powered by GitHub Discussions</div></div></div>
+</div>
+</article>
+<aside class="toc {{ tocCls }}">
+<div class="toclab">本頁目錄</div>
+<sc-for list="{{ toc }}" as="h" hint-placeholder-count="5"><a class="tl {{ h.cls }}" onClick="{{ h.go }}">{{ h.t }}</a></sc-for>
+<div class="tocmeta"><div class="tb"><span>字數</span><span>約 2,400</span></div><div class="tb"><span>公式</span><span>KaTeX ×9</span></div><div class="tb"><span>更新</span><span>2026-07-08</span></div></div>
+</aside>
+</div>
+</div>
+<div class="foot"><span class="c">© 2026 最佳化啟示錄 · 內容 CC BY-NC 轉載須註明來源</span><div class="footlinks"><a>RSS</a><a>GitHub</a><a>回到頂部 ↑</a></div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { lr: 0.85, dark: false, loading: true, active: 's-intuition', menuOpen: false, tocOpen: false };
+  pal = {
+    light: { bg:'#fffdf8', line:'#e6dac6', accent:'#8a3324', dim:'#cda69c', min:'#b89a8f' },
+    dark:  { bg:'#282219', line:'#463d31', accent:'#e0a184', dim:'#8a6a5a', min:'#a98a7a' }
+  };
+
+  setRoot = (el) => { if (el) { this.rootEl = el; this.tryKatex(); this.setupSpy(); } };
+  setCanvas = (el) => { if (el) { this.cv = { el, ctx: el.getContext('2d') }; if (!this.raf) this.loop(); } else this.cv = null; };
+
+  componentDidMount() { this.computePath(); this.progress = 0; this.hold = 0; }
+  componentWillUnmount() { if (this.raf) cancelAnimationFrame(this.raf); if (this.io) this.io.disconnect(); }
+  setLr(v) { this.setState({ lr: v }, () => { this.computePath(); this.progress = 0; this.hold = 0; }); }
+
+  tryKatex(tries) {
+    tries = tries || 0;
+    if (window.renderMathInElement && this.rootEl) {
+      try { window.renderMathInElement(this.rootEl, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false }); } catch (e) {}
+    } else if (tries < 40) { setTimeout(() => this.tryKatex(tries + 1), 100); }
+  }
+
+  setupSpy() {
+    if (this.io) this.io.disconnect();
+    const ids = ['s-intuition', 's-algo', 's-conv', 's-code', 's-more'];
+    this.io = new IntersectionObserver((ents) => {
+      ents.forEach((e) => { if (e.isIntersecting) this.setState({ active: e.target.id }); });
+    }, { rootMargin: '-15% 0px -70% 0px' });
+    setTimeout(() => { ids.forEach((id) => { const el = this.rootEl.querySelector('#' + id); if (el) this.io.observe(el); }); }, 60);
+  }
+
+  computePath() {
+    const a = 0.3, b = 1.2, cx = 1, cy = 0, lr = this.state.lr;
+    let x = -8, y = 4.6; const pts = [{ x, y }];
+    for (let i = 0; i < 70; i++) { x -= lr * a * (x - cx); y -= lr * b * (y - cy); pts.push({ x, y }); if (!isFinite(x) || Math.abs(x) > 80 || Math.abs(y) > 80) break; }
+    this.path = pts;
+  }
+
+  loop = () => {
+    const p = this.path || []; const maxIdx = p.length - 1;
+    if (this.progress === undefined) this.progress = 0;
+    if (this.progress >= maxIdx) { this.hold++; if (this.hold > 55) { this.progress = 0; this.hold = 0; } }
+    else this.progress += 0.045;
+    if (this.cv) { this.draw(); if (this.state.loading) this.setState({ loading: false }); }
+    this.raf = requestAnimationFrame(this.loop);
+  };
+
+  draw() {
+    const path0 = this.path; if (!path0 || !path0.length) return;
+    const pal = this.pal[this.state.dark ? 'dark' : 'light'];
+    const el = this.cv.el, ctx = this.cv.ctx;
+    const rect = el.getBoundingClientRect(); const dpr = window.devicePixelRatio || 1;
+    const W = Math.round(rect.width * dpr), H = Math.round(rect.height * dpr);
+    if (!W || !H) return;
+    if (el.width !== W) { el.width = W; el.height = H; }
+    const pad = 8 * dpr, xmin = -9, xmax = 11, ymin = -6.5, ymax = 6.5;
+    const px = (x) => pad + (x - xmin) / (xmax - xmin) * (W - 2 * pad);
+    const py = (y) => H - pad - (y - ymin) / (ymax - ymin) * (H - 2 * pad);
+    ctx.clearRect(0, 0, W, H); ctx.fillStyle = pal.bg; ctx.fillRect(0, 0, W, H);
+    const a = 0.3, b = 1.2, cx = 1, cy = 0, cxp = px(cx), cyp = py(cy);
+    ctx.lineWidth = 1 * dpr;
+    for (const L of [1, 4, 9, 16, 25, 36, 49, 64]) {
+      const rx = Math.sqrt(2 * L / a) / (xmax - xmin) * (W - 2 * pad);
+      const ry = Math.sqrt(2 * L / b) / (ymax - ymin) * (H - 2 * pad);
+      ctx.beginPath(); ctx.ellipse(cxp, cyp, rx, ry, 0, 0, Math.PI * 2); ctx.strokeStyle = pal.line; ctx.stroke();
+    }
+    ctx.strokeStyle = pal.min; ctx.lineWidth = 1.5 * dpr;
+    ctx.beginPath(); ctx.moveTo(cxp - 5 * dpr, cyp); ctx.lineTo(cxp + 5 * dpr, cyp); ctx.moveTo(cxp, cyp - 5 * dpr); ctx.lineTo(cxp, cyp + 5 * dpr); ctx.stroke();
+    const path = this.path || []; const maxIdx = path.length - 1;
+    const idx = Math.min(Math.floor(this.progress), maxIdx);
+    let cur;
+    if (idx < maxIdx) { const f = this.progress - idx; cur = { x: path[idx].x + (path[idx + 1].x - path[idx].x) * f, y: path[idx].y + (path[idx + 1].y - path[idx].y) * f }; }
+    else cur = path[maxIdx];
+    ctx.strokeStyle = pal.accent; ctx.globalAlpha = .55; ctx.lineWidth = 2 * dpr;
+    ctx.beginPath(); ctx.moveTo(px(path[0].x), py(path[0].y));
+    for (let i = 1; i <= idx; i++) ctx.lineTo(px(path[i].x), py(path[i].y));
+    ctx.lineTo(px(cur.x), py(cur.y)); ctx.stroke();
+    ctx.fillStyle = pal.accent;
+    for (let i = 0; i <= idx; i++) { ctx.globalAlpha = .4; ctx.beginPath(); ctx.arc(px(path[i].x), py(path[i].y), 2.4 * dpr, 0, Math.PI * 2); ctx.fill(); }
+    ctx.globalAlpha = 1;
+    ctx.beginPath(); ctx.arc(px(cur.x), py(cur.y), 5.5 * dpr, 0, Math.PI * 2); ctx.fillStyle = pal.accent; ctx.fill();
+    ctx.lineWidth = 2 * dpr; ctx.strokeStyle = pal.bg; ctx.stroke();
+  }
+
+  renderVals() {
+    const lr = this.state.lr, active = this.state.active;
+    const mk = (id, t) => ({ t, cls: active === id ? 'on' : '', go: () => { const el = this.rootEl && this.rootEl.querySelector('#' + id); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 78, behavior: 'smooth' }); this.setState({ tocOpen: false }); } });
+    return {
+      lr, lrText: 'η = ' + lr.toFixed(2),
+      darkCls: this.state.dark ? 'dark' : '',
+      darkIcon: this.state.dark ? '☀' : '☾',
+      loading: this.state.loading,
+      onLr: (e) => this.setLr(+e.target.value),
+      onReplay: () => { this.progress = 0; this.hold = 0; },
+      onToggleDark: () => this.setState({ dark: !this.state.dark }),
+      menuCls: this.state.menuOpen ? 'open' : '',
+      tocCls: this.state.tocOpen ? 'open' : '',
+      tocArrow: this.state.tocOpen ? '▲' : '▼',
+      onMenu: () => this.setState({ menuOpen: !this.state.menuOpen }),
+      onToc: () => this.setState({ tocOpen: !this.state.tocOpen }),
+      setRoot: this.setRoot, setCanvas: this.setCanvas,
+      copyEq: (e) => { const t = e.currentTarget.getAttribute('data-tex'); navigator.clipboard && navigator.clipboard.writeText(t); e.currentTarget.textContent = '✓ 已複製'; setTimeout(() => { e.currentTarget.textContent = '⧉ 複製 LaTeX'; }, 1200); },
+      copyCode: (e) => { const pre = e.currentTarget.closest('.codeblock').querySelector('pre'); navigator.clipboard && navigator.clipboard.writeText(pre.textContent); e.currentTarget.textContent = '✓ 已複製'; setTimeout(() => { e.currentTarget.textContent = '⧉ 複製'; }, 1200); },
+      toc: [mk('s-intuition', '01 · 直覺'), mk('s-algo', '02 · 演算法'), mk('s-conv', '03 · 收斂性'), mk('s-code', '04 · 程式實作'), mk('s-more', '05 · 延伸閱讀')]
+    };
+  }
+}
+</script>
+</body>
+</html>

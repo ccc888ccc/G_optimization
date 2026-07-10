@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.ds{--bg:#faf7f0;--surface:#fffdf8;--ink:#2b2621;--muted:#7d7365;--faint:#a8a091;--line:#e8ded0;--accent:#8a3324;--accent-soft:#f2e5df;--code-bg:#f4ede0;--warn:#b45309;--warn-soft:#f8ecd8;--err:#a13a34;--err-soft:#f6e3e0;font-family:'Noto Serif TC',serif;background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+.ds.dark{--bg:#201c17;--surface:#282219;--ink:#ece4d5;--muted:#a89e8c;--faint:#7a715f;--line:#3b342a;--accent:#e0a184;--accent-soft:#3a2c22;--code-bg:#1c1813;--warn:#e0a95e;--warn-soft:#3a2f1c;--err:#e69a8f;--err-soft:#3a2620}
+.mono{font-family:'JetBrains Mono',monospace}
+a{color:var(--accent)}
+.top{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:16px;padding:18px 48px;border-bottom:1px solid var(--line);background:var(--surface)}
+.mark{width:32px;height:32px;border-radius:7px;background:var(--accent);color:var(--surface);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:16px}
+.tt{font-weight:700;font-size:17px}
+.tsub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:.06em}
+.icb{margin-left:auto;height:36px;padding:0 14px;border-radius:9px;border:1px solid var(--line);background:var(--bg);display:flex;align-items:center;gap:8px;color:var(--muted);cursor:pointer;font-size:13px;font-family:'Noto Sans TC',sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 48px 90px}
+.lead{font-size:15px;color:var(--muted);line-height:1.8;max-width:64ch;margin:26px 0 8px}
+.sec{margin:56px 0 0}
+.secn{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);font-weight:600;letter-spacing:.1em}
+.sech{font-size:24px;font-weight:700;margin:8px 0 4px;letter-spacing:-.01em}
+.secd{font-size:14px;color:var(--muted);line-height:1.7;margin:0 0 22px;max-width:60ch}
+.card{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:22px 24px}
+.swgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.sw{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.swtop{height:64px;display:flex}
+.swl{flex:1}.swr{flex:1}
+.swmeta{padding:10px 12px}
+.swname{font-size:13px;font-weight:600}
+.swhex{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between}
+.typerow{display:flex;align-items:baseline;gap:20px;padding:16px 0;border-bottom:1px solid var(--line)}
+.typespec{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);width:150px;flex-shrink:0;line-height:1.6}
+.fontgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.fontcard{border:1px solid var(--line);border-radius:8px;padding:18px 20px;background:var(--bg)}
+.fontlab{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:8px}
+.badge{display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:4px 12px;border-radius:100px;font-family:'Noto Sans TC',sans-serif;line-height:1.5}
+.typechip{display:inline-flex;font-size:12px;font-weight:600;padding:3px 11px;border-radius:100px;font-family:'Noto Sans TC',sans-serif;border:1px solid currentColor;background:transparent}
+.badgegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.bg-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.bg-en{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);margin-left:auto}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.b-fnd{color:#4b5563;background:#eceef1}.b-lp{color:#1d4ed8;background:#e7edfd}.b-ip{color:#6d28d9;background:#efe9fd}.b-nlp{color:#0f766e;background:#e2f2f0}.b-sp{color:#b45309;background:#fbeede}.b-sip{color:#92400e;background:#f6e9dc}.b-dp{color:#be185d;background:#fbe6ef}.b-dec{color:#4338ca;background:#e9e8fb}.b-tool{color:#047857;background:#e0f1ea}
+.dark .b-fnd{color:#c3cad6;background:#2c3138}.dark .b-lp{color:#9db8f5;background:#1e2b4d}.dark .b-ip{color:#c3a5f0;background:#2c2447}.dark .b-nlp{color:#7fd8cd;background:#173a36}.dark .b-sp{color:#e9b877;background:#3a2c17}.dark .b-sip{color:#dbab7a;background:#332413}.dark .b-dp{color:#f0a0c2;background:#3d1c2c}.dark .b-dec{color:#b0aef5;background:#26244a}.dark .b-tool{color:#7fd3ac;background:#123326}
+.tc-con{color:#0f766e}.tc-met{color:#8a3324}.tc-prf{color:#4338ca}.tc-app{color:#047857}.tc-gd{color:#b45309}.tc-qa{color:#be185d}
+.dark .tc-con{color:#7fd8cd}.dark .tc-met{color:#e0a184}.dark .tc-prf{color:#b0aef5}.dark .tc-app{color:#7fd3ac}.dark .tc-gd{color:#e9b877}.dark .tc-qa{color:#f0a0c2}
+.scalerow{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.scalebar{height:16px;background:var(--accent-soft);border-radius:3px}
+.scalelab{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);width:70px}
+.radrow{display:flex;gap:16px;margin-top:6px}
+.radbox{width:80px;height:60px;background:var(--accent-soft);border:1px solid var(--line);display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px}
+.radlab{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.callout{border-radius:8px;padding:14px 18px;font-size:14px;line-height:1.75;border:1px solid var(--line);display:flex;gap:12px}
+.callout .cico{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:13px;flex-shrink:0}
+.callout .clab{font-weight:700;display:block;margin-bottom:2px;font-family:'Noto Sans TC',sans-serif;font-size:12px}
+.c-intu{background:var(--accent-soft);border-color:var(--accent-soft)}.c-intu .cico,.c-intu .clab{color:var(--accent)}
+.c-warn{background:var(--warn-soft);border-color:var(--warn-soft)}.c-warn .cico,.c-warn .clab{color:var(--warn)}
+.c-mis{background:var(--err-soft);border-color:var(--err-soft)}.c-mis .cico,.c-mis .clab{color:var(--err)}
+.btnrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn{font-family:'Noto Sans TC',sans-serif;font-weight:600;font-size:14px;padding:10px 20px;border-radius:4px;background:var(--accent);color:#fff;border:1px solid var(--accent);cursor:pointer}
+.dark .btn{color:#201c17}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.link{background:transparent;border:none;color:var(--accent);text-decoration:underline;padding:10px 0}
+.codeblock{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--code-bg);margin-top:6px}
+.codehd{display:flex;justify-content:space-between;padding:8px 14px;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+pre{margin:0;padding:14px 16px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7;overflow-x:auto}
+.kw{color:#a13a34}.dark .kw{color:#e69a8f}.fn{color:#8a5a10}.dark .fn{color:#d6a24e}.str{color:#3f7d4e}.dark .str{color:#8fc79b}.com{color:var(--faint);font-style:italic}.num{color:#6d28d9}.dark .num{color:#c3a5f0}
+.fx{position:relative;margin-top:6px;padding:20px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:16px;line-height:1.9}
+.linkdemo{font-size:15px;line-height:1.9}
+.linkdemo a{color:var(--accent)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+</style>
+</helmet>
+<div class="ds {{ darkCls }}" ref="{{ setRoot }}">
+<div class="top"><span class="mark">∇f</span><span><div class="tt">最佳化啟示錄 · 設計系統</div><div class="tsub">G1 · DESIGN TOKENS &amp; COMPONENTS</div></span><button class="icb" onClick="{{ onToggleDark }}">{{ darkIcon }} {{ modeText }}</button></div>
+<div class="wrap">
+<p class="lead">書卷方向的公版設計語彙。這份文件同時定義亮色與深色兩套 token；右上角可切換，所有元件會同步預覽。目標：長時間閱讀不疲勞、中英數三者並存清楚、可直接對應 Tailwind class。</p>
+
+<div class="sec">
+<div class="secn">G1.1</div><h2 class="sech">色彩系統</h2><p class="secd">暖白紙感為底、磚紅為唯一主色。每個 token 左為亮色、右為深色；深色刻意偏暖，避免純黑刺眼。</p>
+<div class="swgrid"><sc-for list="{{ tokens }}" as="t" hint-placeholder-count="8"><div class="sw"><div class="swtop"><div class="swl" style="background:{{ t.l }}"></div><div class="swr" style="background:{{ t.d }}"></div></div><div class="swmeta"><div class="swname">{{ t.name }}</div><div class="swhex"><span>{{ t.l }}</span><span>{{ t.d }}</span></div></div></div></sc-for></div>
+</div>
+
+<div class="sec">
+<div class="secn">G1.2</div><h2 class="sech">字體與階層</h2><p class="secd">中文用 Noto Serif TC 撐起書卷感與長讀舒適；介面標籤與徽章用 Noto Sans TC；公式交給 KaTeX；程式與數據用 JetBrains Mono。內文行距寬鬆 1.9，欄寬約 68 字元。</p>
+<div class="fontgrid">
+<div class="fontcard"><div class="fontlab">內文 / 標題 — Noto Serif TC</div><div style="font-size:24px;font-weight:700">凸集與分離超平面 Convex Sets</div><div style="font-size:15px;margin-top:6px;line-height:1.8;color:var(--muted)">往最陡的下坡方向踏一步，重複到走不動為止。</div></div>
+<div class="fontcard"><div class="fontlab">介面 / 徽章 — Noto Sans TC</div><div style="font-family:'Noto Sans TC',sans-serif;font-size:24px;font-weight:700">學習路徑 · 每週問題</div><div style="font-family:'Noto Sans TC',sans-serif;font-size:15px;margin-top:6px;color:var(--muted)">導覽、按鈕、徽章、圖說標籤。</div></div>
+</div>
+<div class="card" style="margin-top:14px"><sc-for list="{{ scale }}" as="s" hint-placeholder-count="6"><div class="typerow"><div class="typespec">{{ s.spec }}</div><div style="{{ s.style }}">{{ s.sample }}</div></div></sc-for></div>
+</div>
+
+<div class="sec">
+<div class="secn">G1.3</div><h2 class="sech">領域徽章 · 9 種</h2><p class="secd">維度 A（主領域），每篇文章唯一歸屬。低彩度填色，亮／深色各自調校對比。切換上方模式看深色表現。</p>
+<div class="badgegrid"><sc-for list="{{ domains }}" as="d" hint-placeholder-count="9"><div class="bg-item"><span class="badge {{ d.b }}">{{ d.n }}</span><span class="bg-en">{{ d.e }}</span></div></sc-for></div>
+</div>
+
+<div class="sec">
+<div class="secn">G1.4</div><h2 class="sech">類型徽章 · 6 種</h2><p class="secd">維度 B（文章類型），用於篩選閱讀目的。採外框樣式與領域徽章區隔，避免同一列色塊打架。</p>
+<div class="chips"><sc-for list="{{ types }}" as="t" hint-placeholder-count="6"><span class="typechip {{ t.c }}">{{ t.n }}</span></sc-for></div>
+</div>
+
+<div class="sec">
+<div class="secn">G1.5</div><h2 class="sech">間距、圓角與陰影</h2><p class="secd">間距採 4 的倍數尺標；圓角三級；卡片用一層柔和陰影界定層次。</p>
+<div class="two">
+<div class="card"><div class="fontlab" style="margin-bottom:14px">間距尺標 SPACING</div><sc-for list="{{ spacing }}" as="sp" hint-placeholder-count="7"><div class="scalerow"><span class="scalelab">{{ sp.lab }}</span><span class="scalebar" style="width:{{ sp.w }}"></span></div></sc-for></div>
+<div class="card"><div class="fontlab" style="margin-bottom:14px">圓角 RADIUS</div><div class="radrow"><div class="radbox" style="border-radius:4px"><span class="radlab">4 按鈕</span></div><div class="radbox" style="border-radius:8px"><span class="radlab">8 容器</span></div><div class="radbox" style="border-radius:100px"><span class="radlab">徽章</span></div></div><div class="fontlab" style="margin:22px 0 12px">陰影 ELEVATION</div><div style="height:56px;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:0 1px 0 rgba(0,0,0,.04),0 18px 40px -26px rgba(30,25,20,.4);display:flex;align-items:center;padding:0 16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)">card · 0 18px 40px -26px</div></div>
+</div>
+</div>
+
+<div class="sec">
+<div class="secn">G1.6</div><h2 class="sech">元件</h2><p class="secd">長閱讀會用到的核心元件：連結、按鈕、三種提示框、程式碼區塊與公式樣式。</p>
+<div class="grid3" style="margin-bottom:16px">
+<div class="callout c-intu"><span class="cico">✦</span><span><span class="clab">直覺</span>先給幾何圖像。</span></div>
+<div class="callout c-warn"><span class="cico">▲</span><span><span class="clab">注意</span>易踩的陷阱。</span></div>
+<div class="callout c-mis"><span class="cico">✕</span><span><span class="clab">常見誤解</span>釐清錯誤觀念。</span></div>
+</div>
+<div class="two">
+<div class="card"><div class="fontlab" style="margin-bottom:14px">按鈕 BUTTONS</div><div class="btnrow"><button class="btn">開始學習</button><button class="btn ghost">瀏覽領域</button><button class="btn link">閱讀全文 →</button></div><div class="fontlab" style="margin:22px 0 8px">連結 LINKS</div><div class="linkdemo">內文中的<a>交叉引用連結</a>採主色，hover 加底線；正文其餘為墨色。</div></div>
+<div class="card"><div class="fontlab" style="margin-bottom:8px">公式 FORMULA · KaTeX</div><div class="fx"><div>$$x_{k+1} = x_k - \eta\,\nabla f(x_k)$$</div></div></div>
+</div>
+<div class="codeblock" style="margin-top:16px"><div class="codehd"><span>syntax_highlight.py</span><span>JetBrains Mono</span></div><pre><code><span class="kw">def</span> <span class="fn">step</span>(x, eta=<span class="num">0.1</span>):
+    <span class="com"># 一步梯度下降</span>
+    <span class="kw">return</span> x - eta * <span class="fn">grad</span>(x)</code></pre></div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { dark: false };
+  setRoot = (el) => { if (el) { this.rootEl = el; this.tryKatex(); } };
+  tryKatex(tries) {
+    tries = tries || 0;
+    if (window.renderMathInElement && this.rootEl) {
+      try { window.renderMathInElement(this.rootEl, { delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }], throwOnError: false }); } catch (e) {}
+    } else if (tries < 40) { setTimeout(() => this.tryKatex(tries + 1), 100); }
+  }
+  renderVals() {
+    return {
+      darkCls: this.state.dark ? 'dark' : '',
+      darkIcon: this.state.dark ? '☀' : '☾',
+      modeText: this.state.dark ? '深色' : '亮色',
+      setRoot: this.setRoot,
+      onToggleDark: () => this.setState({ dark: !this.state.dark }),
+      tokens: [
+        { name: '背景 bg', l: '#faf7f0', d: '#201c17' },
+        { name: '卡面 surface', l: '#fffdf8', d: '#282219' },
+        { name: '文字 ink', l: '#2b2621', d: '#ece4d5' },
+        { name: '次要 muted', l: '#7d7365', d: '#a89e8c' },
+        { name: '分隔線 line', l: '#e8ded0', d: '#3b342a' },
+        { name: '主色 accent', l: '#8a3324', d: '#e0a184' },
+        { name: '主色柔 soft', l: '#f2e5df', d: '#3a2c22' },
+        { name: '程式底 code', l: '#f4ede0', d: '#1c1813' }
+      ],
+      scale: [
+        { spec: 'H1 · 42/700', style: 'font-size:34px;font-weight:700;line-height:1.2', sample: '梯度下降' },
+        { spec: 'H2 · 26/700', style: 'font-size:24px;font-weight:700', sample: '收斂性分析' },
+        { spec: 'H3 · 19/600', style: 'font-size:19px;font-weight:600', sample: '方法比較' },
+        { spec: 'Body · 17/400', style: 'font-size:17px;line-height:1.9', sample: '沿著梯度反方向踏一步。' },
+        { spec: 'Lead · 19/400', style: 'font-size:19px;color:var(--muted);line-height:1.8', sample: '一句話直覺先行。' },
+        { spec: 'Caption · 13.5', style: 'font-size:13.5px;color:var(--muted)', sample: '圖 1 · 等高線上的收斂路徑' }
+      ],
+      domains: [
+        { n: '基礎數學', e: 'Foundations', b: 'b-fnd' },
+        { n: 'LP 線性規劃', e: 'Linear', b: 'b-lp' },
+        { n: 'IP · BIP', e: 'Integer', b: 'b-ip' },
+        { n: 'NLP 非線性', e: 'Nonlinear', b: 'b-nlp' },
+        { n: 'SP 隨機規劃', e: 'Stochastic', b: 'b-sp' },
+        { n: 'SIP 隨機整數', e: 'Stoch. Integer', b: 'b-sip' },
+        { n: 'DP 動態規劃', e: 'Dynamic', b: 'b-dp' },
+        { n: '分解與對偶', e: 'Decomposition', b: 'b-dec' },
+        { n: '工具與計算', e: 'Tools', b: 'b-tool' }
+      ],
+      types: [
+        { n: '觀念 Concept', c: 'tc-con' },
+        { n: '方法 Method', c: 'tc-met' },
+        { n: '證明 Proof', c: 'tc-prf' },
+        { n: '應用 Application', c: 'tc-app' },
+        { n: '導讀 Guide', c: 'tc-gd' },
+        { n: '答讀者問 Q&A', c: 'tc-qa' }
+      ],
+      spacing: [
+        { lab: '4px', w: '4%' }, { lab: '8px', w: '8%' }, { lab: '12px', w: '13%' }, { lab: '16px', w: '20%' }, { lab: '24px', w: '32%' }, { lab: '32px', w: '48%' }, { lab: '48px', w: '68%' }, { lab: '80px', w: '100%' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
