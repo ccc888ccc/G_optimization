@@ -3,6 +3,10 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import rehypeCodeblock from './src/lib/rehype-codeblock.mjs';
+import rehypeEqCopy from './src/lib/rehype-eq-copy.mjs';
 
 // TODO(G): 上線後若綁定自有網域，改這裡的 site。
 export default defineConfig({
@@ -16,5 +20,12 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  // KaTeX（remark-math + rehype-katex）將於文章頁里程碑加入 markdown 設定。
+  markdown: {
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [rehypeKatex, rehypeEqCopy, rehypeCodeblock],
+    shikiConfig: {
+      // 用 css-variables 主題，讓語法上色吃 global.css 的 --code-* token（亮/深自動切換）。
+      theme: 'css-variables',
+    },
+  },
 });

@@ -1,0 +1,13 @@
+---
+import { TYPE_LABELS, type ArticleType } from '../../lib/taxonomy';
+
+interface Props {
+  type: ArticleType;
+}
+
+const { type } = Astro.props;
+---
+
+<span class:list={['badge-type-pill font-ui', `badge-type-${type}`]}>
+  {TYPE_LABELS[type]}
+</span>

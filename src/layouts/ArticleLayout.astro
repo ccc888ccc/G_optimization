@@ -1,0 +1,193 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import DomainBadge from '../components/badges/DomainBadge.astro';
+import TypeBadge from '../components/badges/TypeBadge.astro';
+import TagChip from '../components/badges/TagChip.astro';
+import { DOMAIN_LABELS } from '../lib/taxonomy';
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  entry: CollectionEntry<'articles'>;
+  headings: Heading[];
+}
+
+const { entry, headings } = Astro.props;
+const { data } = entry;
+
+const all = await getCollection('articles', (e) => !e.data.draft);
+const bySlug = new Map(all.map((e) => [e.data.slug, e]));
+const prev = data.prevSlug ? bySlug.get(data.prevSlug) : undefined;
+const next = data.nextSlug ? bySlug.get(data.nextSlug) : undefined;
+const related = (data.related ?? []).map((s) => bySlug.get(s)).filter((e): e is CollectionEntry<'articles'> => !!e);
+
+const toc = headings.filter((h) => h.depth === 2);
+
+const approxChars = entry.body?.length ?? 0;
+const wordCountLabel = approxChars > 0 ? `約 ${Math.round(approxChars / 100) * 100}` : '—';
+const readMinutes = Math.max(1, Math.round(approxChars / 450));
+const eqCount = Math.round((entry.body?.match(/\$/g)?.length ?? 0) / 2);
+const updatedLabel = (data.updated ?? data.date).toISOString().slice(0, 10);
+---
+
+<BaseLayout title={data.title} description={data.description}>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <nav class="article-crumb pt-6 font-ui" aria-label="麵包屑">
+      <a href="/">首頁</a>
+      <span>/</span>
+      <a href={`/domains/${data.domain}`}>{DOMAIN_LABELS[data.domain]}</a>
+      <span>/</span>
+      <span>{data.title}</span>
+    </nav>
+
+    <div class="article-layout py-2 pb-16">
+      <div class="tocbar">
+        <button class="tocbtn" id="toc-toggle" type="button" aria-expanded="false" aria-controls="toc-aside">
+          ≡ 本頁目錄<span class="ta" id="toc-arrow">▼</span>
+        </button>
+      </div>
+
+      <article class="article-body min-w-0" style="max-width: var(--measure)">
+        <div class="article-metarow">
+          <DomainBadge domain={data.domain} />
+          {data.type.map((t) => <TypeBadge type={t} />)}
+        </div>
+        <h1 class="article-title">{data.title}</h1>
+        <p class="article-lead">{data.description}</p>
+        <div class="article-byline">
+          <span class="article-avatar">G</span>
+          <span>作者 G</span>
+          <span>·</span>
+          <span>{data.date.toISOString().slice(0, 10)}</span>
+          <span>·</span>
+          <span>閱讀 {readMinutes} 分鐘</span>
+          {data.tags.length > 0 && (
+            <>
+              <span>·</span>
+              <span class="flex flex-wrap gap-1.5">
+                {data.tags.map((t) => <TagChip tag={t} />)}
+              </span>
+            </>
+          )}
+        </div>
+
+        <div class="prose" id="article-prose">
+          <slot />
+        </div>
+
+        {related.length > 0 && (
+          <div class="related">
+            {related.map((r) => (
+              <a class="rcard" href={`/articles/${r.data.slug}`}>
+                <DomainBadge domain={r.data.domain} />
+                <div class="rt">{r.data.title}</div>
+                <div class="rx">{r.data.description}</div>
+              </a>
+            ))}
+          </div>
+        )}
+
+        {(prev || next) && (
+          <div class="pnav font-ui">
+            <a class="pn prev" href={prev ? `/articles/${prev.data.slug}` : undefined} aria-disabled={!prev}>
+              {prev && (
+                <>
+                  <div class="pk">← 上一篇</div>
+                  <div class="pv">{prev.data.title}</div>
+                </>
+              )}
+            </a>
+            <a class="pn next" href={next ? `/articles/${next.data.slug}` : undefined} aria-disabled={!next}>
+              {next && (
+                <>
+                  <div class="pk">下一篇 →</div>
+                  <div class="pv">{next.data.title}</div>
+                </>
+              )}
+            </a>
+          </div>
+        )}
+
+        <div class="comments">
+          <div class="toc-label">留言討論 · Giscus</div>
+          <div class="giscus">
+            <div class="gi">💬</div>
+            <div>用 GitHub 帳號登入即可留言、提問</div>
+            <div class="gsub">TODO(G)：接上 Giscus repo 設定後移除此佔位</div>
+          </div>
+        </div>
+      </article>
+
+      <aside class="toc-aside" id="toc-aside">
+        <div class="toc-label">本頁目錄</div>
+        {toc.map((h) => (
+          <a class="tl" href={`#${h.slug}`} data-toc-link data-target={h.slug}>
+            {h.text}
+          </a>
+        ))}
+        <div class="toc-meta">
+          <div class="tb"><span>字數</span><span>{wordCountLabel}</span></div>
+          <div class="tb"><span>公式</span><span>KaTeX ×{eqCount}</span></div>
+          <div class="tb"><span>更新</span><span>{updatedLabel}</span></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // TOC 手機抽屜開合
+  const tocBtn = document.getElementById('toc-toggle');
+  const tocAside = document.getElementById('toc-aside');
+  const tocArrow = document.getElementById('toc-arrow');
+  tocBtn?.addEventListener('click', () => {
+    const open = tocAside?.classList.toggle('open');
+    tocBtn.setAttribute('aria-expanded', String(!!open));
+    if (tocArrow) tocArrow.textContent = open ? '▲' : '▼';
+  });
+
+  // TOC scroll spy
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]'));
+  if (links.length) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const id = entry.target.id;
+          links.forEach((l) => l.classList.toggle('on', l.dataset.target === id));
+        });
+      },
+      { rootMargin: '-15% 0px -70% 0px' }
+    );
+    document.querySelectorAll('#article-prose h2[id]').forEach((h) => io.observe(h));
+  }
+
+  // 複製 LaTeX（公式）
+  document.addEventListener('click', async (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-copy-eq]');
+    if (!btn) return;
+    const tex = btn.dataset.tex ?? '';
+    await navigator.clipboard.writeText(tex);
+    const original = btn.textContent;
+    btn.textContent = '✓ 已複製';
+    setTimeout(() => { btn.textContent = original; }, 1200);
+  });
+
+  // 複製程式碼
+  document.addEventListener('click', async (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-copy-code]');
+    if (!btn) return;
+    const pre = btn.closest('.codeblock')?.querySelector('pre');
+    if (!pre) return;
+    await navigator.clipboard.writeText(pre.textContent ?? '');
+    const original = btn.textContent;
+    btn.textContent = '✓ 已複製';
+    setTimeout(() => { btn.textContent = original; }, 1200);
+  });
+</script>

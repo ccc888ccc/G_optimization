@@ -1,0 +1,21 @@
+---
+// 互動元件容器（統一樣式）：標題列 + 置中畫布 + 圖說 + 載入狀態。
+// MDX 內用法：<InteractiveFrame title="..." tag="..."><ConvexHullDemo client:visible /><Fragment slot="caption">...</Fragment></InteractiveFrame>
+interface Props {
+  title: string;
+  tag?: string;
+}
+
+const { title, tag } = Astro.props;
+---
+
+<div class="demo not-prose">
+  <div class="demohd">
+    <div class="demoname"><span class="livedot"></span>{title}</div>
+    {tag && <span class="demotag font-ui">{tag}</span>}
+  </div>
+  <div class="mediawrap">
+    <slot />
+  </div>
+  <p class="demo-caption"><slot name="caption" /></p>
+</div>

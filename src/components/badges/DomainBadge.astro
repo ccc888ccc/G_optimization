@@ -1,0 +1,16 @@
+---
+import { DOMAIN_LABELS, type Domain } from '../../lib/taxonomy';
+
+interface Props {
+  domain: Domain;
+  /** 是否顯示中英雙語完整名稱（預設 true）；設 false 時只顯示簡稱。 */
+  full?: boolean;
+}
+
+const { domain, full = true } = Astro.props;
+const label = DOMAIN_LABELS[domain];
+---
+
+<span class:list={['badge-pill font-ui', `badge-domain-${domain}`]}>
+  {full ? label : label.split(' ')[0]}
+</span>

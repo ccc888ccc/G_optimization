@@ -1,0 +1,35 @@
+---
+title: "LP 的幾何：可行域是多面體、最佳解在頂點"
+slug: "lp-geometry"
+domain: "lp"
+type: ["concept", "proof"]
+tags: ["多面體", "頂點", "可行域"]
+paths: ["undergrad", "review"]
+order: 3
+hasProof: true
+hasInteractive: true
+date: 2026-07-11
+draft: false
+description: "LP 的可行域是凸多面體，而且最佳解一定落在某個頂點上——這件事撐起了整個單體法。"
+prevSlug: "separating-hyperplane"
+nextSlug: "simplex-method"
+related: ["convex-sets"]
+---
+
+> TODO(G)：本篇為骨架，正文待補。互動動畫規劃：2D 可行域 + 目標函數等值線移動，觀察最佳解何時落在頂點（新 island 元件）。
+
+## 01 標準式與可行域
+
+TODO(G)：$\min c^\top x \text{ s.t. } Ax \le b$，可行域 $\{x : Ax \le b\}$ 是半空間的交集 → 多面體。
+
+## 02 頂點（extreme point）的定義
+
+TODO(G)：不能寫成可行域內其他兩點凸組合的點。
+
+## 03 最佳解落在頂點上（證明）
+
+TODO(G)：完整證明用 `<Proof>` 元件，收合。
+
+## 04 為什麼這件事重要
+
+TODO(G)：連到單體法——既然最佳解在頂點，演算法只需要在頂點間移動。

@@ -1,0 +1,26 @@
+---
+// 三型 callout：intu 直覺 / warn 注意 / mis 常見誤解（交接檔第 5 節）。
+type CalloutType = 'intu' | 'warn' | 'mis';
+
+interface Props {
+  type?: CalloutType;
+  label?: string;
+}
+
+const DEFAULTS: Record<CalloutType, { label: string; icon: string }> = {
+  intu: { label: '直覺', icon: '✦' },
+  warn: { label: '注意', icon: '▲' },
+  mis: { label: '常見誤解', icon: '✕' },
+};
+
+const { type = 'intu', label } = Astro.props;
+const d = DEFAULTS[type];
+---
+
+<div class:list={['callout', `c-${type}`]}>
+  <span class="cico">{d.icon}</span>
+  <span>
+    <span class="clab">{label ?? d.label}</span>
+    <slot />
+  </span>
+</div>

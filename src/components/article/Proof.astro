@@ -1,0 +1,19 @@
+---
+// 可摺疊證明：語意用 <details>/<summary>，預設收合，三角箭頭 CSS 旋轉。
+interface Props {
+  title?: string;
+  label?: string;
+  /** 預設 false（收合）；證明區依交接檔規範預設收合。 */
+  open?: boolean;
+}
+
+const { title = '展開完整證明', label = 'Proof · 無跳步', open = false } = Astro.props;
+---
+
+<details class="proof" open={open}>
+  <summary><span class="tri">▸</span>{title}<span class="plab">{label}</span></summary>
+  <div class="proofbody">
+    <slot />
+    <p class="qed">∎</p>
+  </div>
+</details>

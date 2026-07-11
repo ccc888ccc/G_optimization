@@ -1,0 +1,98 @@
+---
+title: "凸集：定義、凸組合、凸包"
+slug: "convex-sets"
+domain: "foundations"
+type: ["concept"]
+tags: ["凸性", "凸包", "凸組合"]
+paths: ["undergrad", "grad", "review"]
+order: 7
+hasProof: true
+hasInteractive: true
+date: 2026-07-11
+draft: false
+description: "為什麼最佳化理論偏愛凸集？從定義、凸組合到凸包，配一個可拖曳的凸包生成互動。"
+prevSlug: "problem-classification"
+nextSlug: "separating-hyperplane"
+related: ["separating-hyperplane", "lp-geometry"]
+---
+
+import Callout from '../../components/article/Callout.astro';
+import Proof from '../../components/article/Proof.astro';
+import InteractiveFrame from '../../components/article/InteractiveFrame.astro';
+import ConvexHullDemo from '../../components/islands/ConvexHullDemo.tsx';
+
+最佳化理論裡，「凸」幾乎是所有好性質的源頭：局部最小就是全域最小、對偶沒有 gap、演算法有收斂保證——這些漂亮的結論幾乎都建立在凸性之上。這篇文章從最基本的**凸集（convex set）**開始。
+
+## 01 定義：任兩點的連線都留在集合內
+
+集合 $C \subseteq \mathbb{R}^n$ 稱為**凸集**，若對任意 $x, y \in C$ 與 $\theta \in [0,1]$，都有
+
+$$
+\theta x + (1-\theta) y \in C.
+$$
+
+<Callout type="intu" label="直覺">
+把 $C$ 想成一塊地：凸集就是「地上任兩點之間直接拉一條線，這條線也完全在地上」——沒有凹進去的地方，不會有兩點連線跑出邊界又繞回來的情形。
+</Callout>
+
+球、超平面、多面體都是凸集；甜甜圈（環面內部）、兩個不相交的圓盤聯集則不是。
+
+## 02 凸組合與凸包
+
+給定點 $x_1, \dots, x_k \in \mathbb{R}^n$，其**凸組合（convex combination）**是
+
+$$
+\sum_{i=1}^k \theta_i x_i, \qquad \theta_i \ge 0,\ \sum_{i=1}^k \theta_i = 1.
+$$
+
+一組點所有凸組合的集合，稱為這組點的**凸包（convex hull）**，記作 $\mathrm{conv}(S)$——直觀上就是「把這些點當釘子，繃一條橡皮筋繞一圈，橡皮筋圍出來的區域」。
+
+<InteractiveFrame title="拖曳點看凸包生成" tag="D3 · SVG">
+  <ConvexHullDemo client:load />
+  <Fragment slot="caption">
+    拖曳任一個點，<b>凸包（磚紅色邊框區域）</b>會即時重新計算。只有落在凸包<b>邊界</b>上的點會被填色——被包在裡面的點，不管怎麼動橡皮筋形狀都不會變，因為它已經是其他點的凸組合。
+  </Fragment>
+</InteractiveFrame>
+
+<Callout type="warn" label="注意">
+凸包一定是凸集（可以直接從定義驗證），但反過來一個凸集不一定是「有限多個點」的凸包——例如一整個實心圓盤就不是任何有限點集的凸包。
+</Callout>
+
+## 03 用程式算凸包
+
+真的要算一組點的凸包時不用手刻，`scipy.spatial.ConvexHull` 幾行就能算出邊界頂點：
+
+```python
+import numpy as np
+from scipy.spatial import ConvexHull
+
+points = np.random.rand(30, 2)
+hull = ConvexHull(points)
+print(points[hull.vertices])  # 依序排列的凸包頂點
+```
+
+## 04 凸集的交集仍是凸集
+
+這是一個看似簡單、但在約束最佳化裡極為關鍵的性質：**任意多個凸集的交集仍是凸集**。這保證了「同時滿足多條凸約束」的可行域仍然是凸的。
+
+<Proof title="展開完整證明" label="Proof · 無跳步">
+設 $\{C_\alpha\}_{\alpha \in A}$ 為一族凸集，令 $C = \bigcap_{\alpha \in A} C_\alpha$。
+
+取任意 $x, y \in C$ 與 $\theta \in [0,1]$。因為 $x, y \in C$，對每個 $\alpha \in A$ 都有 $x, y \in C_\alpha$。
+
+由於每個 $C_\alpha$ 都是凸集，故 $\theta x + (1-\theta) y \in C_\alpha$ 對所有 $\alpha \in A$ 成立。
+
+因此 $\theta x + (1-\theta) y \in \bigcap_{\alpha \in A} C_\alpha = C$，即 $C$ 是凸集。
+</Proof>
+
+## 05 為什麼這件事重要
+
+一個 LP 的可行域 $\{x : Ax \le b\}$ 其實是有限多個半空間（都是凸集）的交集，所以可行域必為凸多面體——這正是下一篇要細看的幾何。同理，多條凸約束疊加在一起的 NLP 可行域，也仍然保證是凸的。
+
+<Callout type="mis" label="常見誤解">
+「約束是線性的，所以可行域一定是凸的」——方向對了但講法不夠精確：真正的關鍵是每條約束描述的都是一個凸集（半空間、凸函數的下水平集等），交集才會是凸的。如果約束本身非凸（例如 $\|x\|=1$ 這種等式約束描述一個球面），可行域一般就不是凸集了。
+</Callout>
+
+## 06 延伸閱讀
+
+下一篇會證明「兩個不相交的凸集可以被一個超平面分開」——這是整個對偶理論的幾何起點。
