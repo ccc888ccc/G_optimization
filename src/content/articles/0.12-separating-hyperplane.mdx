@@ -13,19 +13,61 @@ draft: false
 description: "兩個不相交的凸集，一定可以被一個超平面分開——這是整個對偶理論的幾何起點。"
 prevSlug: "convex-sets"
 nextSlug: "lp-geometry"
-related: ["convex-sets"]
+related: ["convex-sets", "strong-duality"]
 ---
 
-> TODO(G)：本篇為骨架，正文待補。互動動畫規劃：兩個不相交凸集被一條超平面分離，可拖曳其中一個凸集觀察分離超平面如何跟著移動（沿用「凸集」篇的 D3 互動容器樣式，換一個新的 island 元件）。
+import Callout from '../../components/article/Callout.astro';
+import Proof from '../../components/article/Proof.astro';
+import InteractiveFrame from '../../components/article/InteractiveFrame.astro';
+import SeparatingHyperplaneDemo from '../../components/islands/SeparatingHyperplaneDemo.tsx';
+
+上一篇談到凸集的交集仍是凸集；這一篇要處理的是相反的問題：**兩個不相交的凸集，能不能被一刀切開？**答案是可以，而且這一刀（一個超平面）的存在性，正是整個對偶理論的幾何起點。
 
 ## 01 定理敘述
 
-TODO(G)：兩不相交非空凸集 $C, D \subseteq \mathbb{R}^n$，存在 $a \ne 0$ 與 $b$ 使得 $a^\top x \le b\ \forall x \in C$、$a^\top x \ge b\ \forall x \in D$。
+設 $C, D \subseteq \mathbb{R}^n$ 為兩個不相交（$C \cap D = \emptyset$）的非空凸集。若其中至少一個是緊緻的（compact），則存在 $a \ne 0$ 與 $b \in \mathbb{R}$，使得
 
-## 02 證明（先處理點與凸集的分離，再推廣）
+$$
+a^\top x \le b \quad \forall x \in C, \qquad a^\top x \ge b \quad \forall x \in D.
+$$
 
-TODO(G)：完整證明用 `<Proof>` 元件包起來，預設收合。
+<Callout type="intu" label="直覺">
+把 $C$ 和 $D$ 想成兩灘不相交的水漬。因為兩者都是「凸」的（沒有凹進去的地方），你永遠可以在它們之間找到一條直線（$n$ 維時是超平面）把兩灘水完全隔開，一邊全是 $C$，另一邊全是 $D$。
+</Callout>
+
+<InteractiveFrame title="拖曳兩個凸集看分離超平面" tag="D3 · SVG">
+  <SeparatingHyperplaneDemo client:load />
+  <Fragment slot="caption">
+    拖曳任一個點來改變 $C$（實心）或 $D$（空心虛線）的形狀。<b>磚紅色直線</b>是分離超平面，由兩集合間<b>距離最近的一對點</b>的中垂線構成——這正是下面證明的構造方式。試著把兩群點拖到重疊，你會看到這條線不再真的能分開兩邊，因為此時 $C \cap D \ne \emptyset$，定理的前提被破壞了。
+  </Fragment>
+</InteractiveFrame>
+
+## 02 證明：從最近點對開始構造
+
+<Proof title="展開完整證明" label="Proof · 用最近點對構造">
+取 $C$ 中一點 $c^\star$、$D$ 中一點 $d^\star$，使得兩點間距離 $\|c^\star - d^\star\|$ 在 $C \times D$ 上取到最小值（因為其中一個集合緊緻、另一個非空凸，這個最小值存在）。
+
+令 $a = d^\star - c^\star \ne 0$（因為 $C \cap D = \emptyset$，故 $c^\star \ne d^\star$），並取
+
+$$
+b = a^\top \left(\frac{c^\star + d^\star}{2}\right),
+$$
+
+也就是通過 $c^\star, d^\star$ 中點、且垂直於 $a$ 的超平面。
+
+**關鍵引理**：對任意 $x \in C$，都有 $a^\top x \le a^\top c^\star$。
+
+用反證法：若存在 $x \in C$ 使 $a^\top x > a^\top c^\star$，考慮線段 $c^\star + t(x - c^\star)$（$t \in [0,1]$，因 $C$ 凸，此線段完全落在 $C$ 內）。可以證明沿著這條線段前進一小步，到 $d^\star$ 的距離會比 $\|c^\star - d^\star\|$ 更小——與 $c^\star$ 是最近點矛盾。
+
+同理可證對任意 $x \in D$，都有 $a^\top x \ge a^\top d^\star$。
+
+把兩個不等式與 $b$ 的定義接起來，並利用 $a^\top c^\star \le b \le a^\top d^\star$（因為 $b$ 恰好是兩者的中點值），就得到對所有 $x \in C$ 有 $a^\top x \le b$、對所有 $x \in D$ 有 $a^\top x \ge b$。
+</Proof>
+
+<Callout type="warn" label="注意">
+定理需要「至少一個集合緊緻」這個技術性條件——如果兩個都只是開集合且不緊緻（例如兩個漸近但不相交的雙曲線區域），嚴格分離可能不成立，只能拿到「弱分離」（$\le$ 換成非嚴格的邊界情形）。多數最佳化應用裡這個條件都自動滿足，不用太擔心。
+</Callout>
 
 ## 03 為什麼這對對偶理論重要
 
-TODO(G)：連結到日後的強對偶定理那篇證明。
+強對偶定理的標準證明，本質上就是把「原問題最佳值」和「對偶問題可行值」看成 $\mathbb{R}^{n+1}$ 空間裡兩個不相交的凸集，再套用這篇的分離超平面定理——分離出來的超平面，其法向量 $a$ 的分量，就是對偶最佳解本身。下一篇會先處理 LP 的幾何直觀，再一路推向強對偶定理的完整證明。

@@ -15,20 +15,72 @@ prevSlug: "simplex-method"
 related: ["lp-geometry", "separating-hyperplane"]
 ---
 
-> TODO(G)：本篇為骨架，正文待補。互動動畫規劃：原問題與對偶問題最佳值在同一張圖上相遇的幾何示意（新 island 元件）。這篇是 MVP 首批 7 篇主幹的最後一篇；跑通後可從這裡往回補其餘 ~100 篇。
+import Callout from '../../components/article/Callout.astro';
+import Proof from '../../components/article/Proof.astro';
+import InteractiveFrame from '../../components/article/InteractiveFrame.astro';
+import StrongDualityDemo from '../../components/islands/StrongDualityDemo.tsx';
+
+這是 MVP 首批 7 篇主幹的最後一篇。前面鋪了三塊墊腳石——凸集的分離超平面定理、LP 可行域的頂點幾何、單體法的 pivot——這篇要把它們接起來，證明 LP 裡最漂亮的一個結論：**原問題與對偶問題的最佳值永遠相等**。
 
 ## 01 弱對偶回顧
 
-TODO(G)：對偶問題最佳值 $\le$ 原問題最佳值（最小化情形），一行證明。
+給定原問題 $\min\{c^\top x : Ax \ge b, x \ge 0\}$，其對偶問題是 $\max\{b^\top y : A^\top y \le c, y \ge 0\}$。**弱對偶（weak duality）**是很容易的一半：對任意原可行 $x$ 與對偶可行 $y$，都有
+
+$$
+b^\top y \le c^\top x.
+$$
+
+一行證明：$b^\top y \le (Ax)^\top y = x^\top (A^\top y) \le x^\top c = c^\top x$，兩個不等式分別用到 $Ax \ge b, y\ge 0$ 和 $A^\top y \le c, x \ge 0$。
 
 ## 02 強對偶定理敘述
 
-TODO(G)：原問題有最佳解 $\Rightarrow$ 對偶也有最佳解，且兩者相等。
+**強對偶（strong duality）**更進一步：只要原問題有最佳解 $x^\star$，對偶問題也必有最佳解 $y^\star$，且
+
+$$
+c^\top x^\star = b^\top y^\star.
+$$
+
+<InteractiveFrame title="原問題與對偶問題的最佳值相遇" tag="SVG · 具體例子">
+  <StrongDualityDemo client:load />
+  <Fragment slot="caption">
+    用一個具體例子：原問題 max $2x+3y$（三個頂點可切換），對偶 min $4y_1+5y_2$（三個頂點可切換）。橘色箭頭是原問題目前頂點的目標值、灰色箭頭是對偶目前頂點的目標值——不管怎麼切換，<b>灰色永遠不會跑到橘色左邊</b>（弱對偶）。切到兩邊都是各自的最佳頂點時，兩個箭頭會精確疊在同一點上——這就是強對偶。
+  </Fragment>
+</InteractiveFrame>
+
+<Callout type="intu" label="直覺">
+弱對偶保證「對偶可行值永遠是原問題的一個下界」——就像從各種角度量身高，量出來的都不會比真實身高高。強對偶則說：只要原問題真的有解，一定存在某個角度，量出來的下界剛好等於真實身高，不多不少。
+</Callout>
 
 ## 03 證明（用分離超平面定理）
 
-TODO(G)：完整證明用 `<Proof>` 元件收合，串接分離超平面那篇的結論。
+<Proof title="展開完整證明" label="Proof · 幾何構造">
+設 $x^\star$ 是原問題的一個最佳解，最佳值為 $v^\star = c^\top x^\star$。定義 $\mathbb{R}^{m+1}$ 中兩個集合：
+
+$$
+S = \{(Ax - b,\ c^\top x - v^\star) : x \ge 0\}, \qquad T = \{(u, t) : u \ge 0,\ t < 0\}.
+$$
+
+可以驗證 $S$ 是凸集（$x \ge 0$ 是凸集，$Ax-b$ 和 $c^\top x - v^\star$ 都是仿射映射，仿射映射保凸）。而 $T$ 顯然也是凸集。
+
+**關鍵一步**：$S \cap T = \emptyset$。若不然，存在 $x \ge 0$ 使 $Ax \ge b$（即 $x$ 原問題可行）且 $c^\top x < v^\star$——但這與 $v^\star$ 是最佳值矛盾。
+
+由於 $S, T$ 不相交的凸集，套用分離超平面定理：存在 $(y, \lambda) \ne 0$（其中可以取 $\lambda \ge 0$、$y \ge 0$，細節上需要對偶錐的技術性論證，這裡略過）使得對所有 $x \ge 0$，
+
+$$
+y^\top (Ax - b) + \lambda (c^\top x - v^\star) \ge 0.
+$$
+
+取 $\lambda > 0$ 的情形（退化的 $\lambda = 0$ 情形需要額外處理，通常靠原問題的可行性排除），整理並除以 $\lambda$、令 $\bar{y} = y / \lambda$，可以推出 $\bar{y} \ge 0$、$A^\top \bar{y} \le c$（即 $\bar{y}$ 對偶可行），且 $b^\top \bar{y} \ge v^\star$。
+
+配合第一節的弱對偶 $b^\top \bar{y} \le v^\star$，兩者夾在一起得到 $b^\top \bar{y} = v^\star = c^\top x^\star$——也就是 $\bar{y}$ 正是對偶最佳解，強對偶成立。
+</Proof>
+
+<Callout type="warn" label="注意">
+上面證明中「$\lambda = 0$ 的退化情形」被刻意略過了——嚴謹處理需要更小心的論證（通常利用原問題可行域非空這個條件排除掉），這是教科書等級證明常見的簡化。想要完全沒有跳步的版本，可以參考 Boyd & Vandenberghe《Convex Optimization》第 5 章。
+</Callout>
 
 ## 04 互補鬆弛條件
 
-TODO(G)：強對偶的等價刻畫，為 KKT 條件鋪路。
+強對偶還有一個等價、且在演算法上更好用的刻畫：$x^\star, y^\star$ 分別是原、對偶最佳解，若且唯若它們同時可行，且滿足**互補鬆弛（complementary slackness）**——對每一條約束，原變數與對應的對偶鬆弛不能同時非零。這個條件正是 KKT 條件在 LP 特例下的樣子，之後在 NLP 的 KKT 那篇會再完整展開。
+
+至此，MVP 首批 7 篇主幹全部跑通：從凸集出發，經過分離超平面、LP 幾何、單體法，一路走到強對偶定理——Astro + KaTeX + D3 互動 + 可摺疊證明的完整流程都驗證過了。接下來可以往回補完整的 ~110 篇文章清單。

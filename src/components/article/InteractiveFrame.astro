@@ -7,6 +7,7 @@ interface Props {
 }
 
 const { title, tag } = Astro.props;
+const hasControls = Astro.slots.has('controls');
 ---
 
 <div class="demo not-prose">
@@ -17,5 +18,10 @@ const { title, tag } = Astro.props;
   <div class="mediawrap">
     <slot />
   </div>
+  {hasControls && (
+    <div class="democtl font-ui">
+      <slot name="controls" />
+    </div>
+  )}
   <p class="demo-caption"><slot name="caption" /></p>
 </div>

@@ -1,25 +1,31 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import DomainBadge from '../components/badges/DomainBadge.astro';
 import { SITE } from '../config';
+import { DOMAIN_LABELS, type Domain } from '../lib/taxonomy';
 
-// P1 首頁骨架：Hero + 3 學習路徑卡 + 9 領域網格（占位，之後接 content collection）。
+// P1 首頁：Hero + 3 學習路徑卡 + 精選/最新（接 content collection）+ 9 領域網格。
 const paths = [
   { key: 'undergrad', title: '大學部入門', desc: '從零建立最佳化的直覺與基本工具。', icon: '🌱' },
   { key: 'grad', title: '研究所進階', desc: '嚴謹證明、對偶、分解與隨機規劃。', icon: '🎓' },
   { key: 'review', title: '快速複習', desc: '重點公式與定理的速查式回顧。', icon: '⚡' },
 ];
 
-const domains = [
-  { key: 'foundations', label: '基礎數學' },
-  { key: 'lp', label: '線性規劃' },
-  { key: 'ip', label: '整數規劃' },
-  { key: 'nlp', label: '非線性規劃' },
-  { key: 'sp', label: '隨機規劃' },
-  { key: 'sip', label: '隨機整數規劃' },
-  { key: 'dp', label: '動態規劃' },
-  { key: 'decomposition', label: '分解與對偶' },
-  { key: 'tools', label: '工具與計算' },
-];
+const domainKeys = Object.keys(DOMAIN_LABELS) as Domain[];
+
+const articles = await getCollection('articles', (e) => !e.data.draft);
+const sorted = [...articles].sort((a, b) => {
+  const byDate = b.data.date.getTime() - a.data.date.getTime();
+  return byDate !== 0 ? byDate : a.data.order - b.data.order;
+});
+const [featured, ...rest] = sorted;
+const latest = rest.slice(0, 5);
+
+const domainCounts = new Map<Domain, number>();
+for (const a of articles) {
+  domainCounts.set(a.data.domain, (domainCounts.get(a.data.domain) ?? 0) + 1);
+}
 ---
 
 <BaseLayout>
@@ -76,18 +82,52 @@ const domains = [
     </div>
   </section>
 
+  <!-- 精選 + 最新（左大右列表） -->
+  {featured && (
+    <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <h2 class="text-2xl font-semibold text-ink">精選與最新</h2>
+      <div class="mt-8 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+        <a
+          href={`/articles/${featured.data.slug}`}
+          class="group block rounded-lg border border-line bg-surface p-8 transition-shadow hover:shadow-[var(--shadow-card)]"
+          style="border-radius: var(--radius-box)"
+        >
+          <DomainBadge domain={featured.data.domain} />
+          <h3 class="mt-4 text-2xl font-bold text-ink group-hover:text-accent">{featured.data.title}</h3>
+          <p class="mt-3 text-base leading-relaxed text-muted">{featured.data.description}</p>
+        </a>
+
+        <ul class="flex flex-col divide-y divide-line rounded-lg border border-line bg-surface" style="border-radius: var(--radius-box)">
+          {
+            latest.map((a) => (
+              <li>
+                <a href={`/articles/${a.data.slug}`} class="group block px-5 py-4 transition-colors hover:bg-soft">
+                  <div class="flex items-center gap-2">
+                    <DomainBadge domain={a.data.domain} full={false} />
+                  </div>
+                  <h4 class="mt-2 text-sm font-semibold text-ink group-hover:text-accent">{a.data.title}</h4>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  )}
+
   <!-- 9 領域網格 -->
   <section class="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
     <h2 class="text-2xl font-semibold text-ink">九大領域</h2>
     <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
       {
-        domains.map((d) => (
+        domainKeys.map((key) => (
           <a
-            href={`/domains/${d.key}`}
+            href={`/domains/${key}`}
             class="font-ui rounded-lg border border-line bg-surface px-5 py-6 text-center text-sm font-medium text-ink transition-colors hover:border-accent hover:text-accent"
             style="border-radius: var(--radius-box)"
           >
-            {d.label}
+            {DOMAIN_LABELS[key]}
+            {domainCounts.has(key) && <span class="ml-1.5 text-xs text-faint">({domainCounts.get(key)})</span>}
           </a>
         ))
       }

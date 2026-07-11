@@ -13,23 +13,67 @@ draft: false
 description: "LP 的可行域是凸多面體，而且最佳解一定落在某個頂點上——這件事撐起了整個單體法。"
 prevSlug: "separating-hyperplane"
 nextSlug: "simplex-method"
-related: ["convex-sets"]
+related: ["convex-sets", "simplex-method"]
 ---
 
-> TODO(G)：本篇為骨架，正文待補。互動動畫規劃：2D 可行域 + 目標函數等值線移動，觀察最佳解何時落在頂點（新 island 元件）。
+import Callout from '../../components/article/Callout.astro';
+import Proof from '../../components/article/Proof.astro';
+import InteractiveFrame from '../../components/article/InteractiveFrame.astro';
+import LPGeometryDemo from '../../components/islands/LPGeometryDemo.tsx';
+
+線性規劃（LP）之所以好解，關鍵在於它的幾何非常規矩：可行域是一塊「有稜有角」的凸多面體，而最佳解——不管目標函數的方向怎麼變——永遠可以在某個角（頂點）上找到。這篇把這件事的幾何直觀和證明都講清楚。
 
 ## 01 標準式與可行域
 
-TODO(G)：$\min c^\top x \text{ s.t. } Ax \le b$，可行域 $\{x : Ax \le b\}$ 是半空間的交集 → 多面體。
+一個 LP 標準式長這樣：
 
-## 02 頂點（extreme point）的定義
+$$
+\min_x\ c^\top x \quad \text{s.t.}\quad Ax \le b.
+$$
 
-TODO(G)：不能寫成可行域內其他兩點凸組合的點。
+可行域 $P = \{x : Ax \le b\}$ 是有限多個半空間 $\{x : a_i^\top x \le b_i\}$ 的交集。上一篇證過凸集的交集仍是凸集，半空間本身又是凸集，所以 $P$ 必然是凸集——而且因為它是有限多個「平的」邊界圍出來的，形狀是有稜有角的凸**多面體（polyhedron）**，不會有弧形邊界。
 
-## 03 最佳解落在頂點上（證明）
+## 02 頂點（extreme point）
 
-TODO(G)：完整證明用 `<Proof>` 元件，收合。
+$P$ 中的一點 $v$ 稱為**頂點**（或極點，extreme point），若它不能寫成 $P$ 中其他兩個相異點的凸組合——直白地說，頂點是多面體「角」上的點，無法被內部或邊上其他點夾出來。
 
-## 04 為什麼這件事重要
+<Callout type="intu" label="直覺">
+想像一塊切割過的鑽石（多面體）。頂點就是那些尖尖的角；面上或邊上其他任何一點，都可以寫成兩個角的加權平均，只有角本身做不到。
+</Callout>
 
-TODO(G)：連到單體法——既然最佳解在頂點，演算法只需要在頂點間移動。
+## 03 目標函數的等值線與最佳解
+
+下面這個互動把可行域畫成一個凸五邊形，拖曳滑桿轉動目標函數方向 $c$，看看等值線（$c^\top x = z$，垂直於 $c$ 的一族平行線）往外推到最遠時，會停在哪個頂點上。
+
+<InteractiveFrame title="轉動目標方向，看最佳解在哪個頂點" tag="SVG">
+  <LPGeometryDemo client:load />
+  <Fragment slot="caption">
+    磚紅色箭頭是目標方向 $c$；一族平行線是等值線，最外面（$z$ 最大）那條磚紅色的線碰到的頂點就是最佳解 <b>x*</b>。轉動滑桿改變 $c$ 的方向，你會發現最佳解永遠落在某個頂點上，而且隨著方向改變，最佳解只會在<b>相鄰的頂點之間跳動</b>——這正是下一篇單體法沿著邊移動的幾何基礎。
+  </Fragment>
+</InteractiveFrame>
+
+## 04 最佳解落在頂點上（證明）
+
+<Proof title="展開完整證明" label="Proof · 假設有界可行域">
+設 $P$ 為有界（bounded）的凸多面體，$x^\star$ 為 $\min c^\top x$ 在 $P$ 上的一個最佳解。若 $x^\star$ 本身是頂點，證明完畢。
+
+否則 $x^\star$ 不是頂點，代表存在 $P$ 中相異兩點 $y, z$ 與 $\theta \in (0,1)$，使得 $x^\star = \theta y + (1-\theta) z$。
+
+因為 $x^\star$ 是最佳解，$c^\top x^\star \le c^\top y$ 且 $c^\top x^\star \le c^\top z$。但
+
+$$
+c^\top x^\star = \theta\, c^\top y + (1-\theta)\, c^\top z,
+$$
+
+這是 $c^\top y$ 與 $c^\top z$ 的加權平均，所以必須 $c^\top y = c^\top z = c^\top x^\star$——也就是說 $y$ 和 $z$ 也都是最佳解。
+
+因此，只要 $x^\star$ 不是頂點，就一定能找到另一個「更接近頂點」的最佳解（$y$ 或 $z$，往多面體的邊界方向推）。多面體的頂點數有限，這個過程有限步內一定會走到某個頂點——那個頂點也是最佳解。
+</Proof>
+
+<Callout type="mis" label="常見誤解">
+「最佳解落在頂點上」不代表<b>唯一</b>最佳解一定是頂點——如果目標函數的等值線剛好和多面體某條邊平行，那整條邊上的點都是最佳解（無窮多個），只是其中<b>至少有一個</b>頂點也是最佳解，這正是上面證明真正保證的事。
+</Callout>
+
+## 05 為什麼這件事重要
+
+既然最佳解一定在某個頂點上，演算法就不需要搜尋整個（可能無窮大的）可行域，只需要在有限個頂點之間移動——這正是下一篇單體法（simplex method）的出發點：從一個頂點出發，沿著多面體的邊走到目標函數更好的相鄰頂點，直到走不動為止。

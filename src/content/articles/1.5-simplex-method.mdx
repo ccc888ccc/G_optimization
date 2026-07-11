@@ -16,20 +16,43 @@ nextSlug: "strong-duality"
 related: ["lp-geometry"]
 ---
 
-> TODO(G)：本篇為骨架，正文待補。互動動畫規劃：在 2D/3D 多面體頂點間逐步 pivot 移動的動畫（新 island 元件）。
+import Callout from '../../components/article/Callout.astro';
+import InteractiveFrame from '../../components/article/InteractiveFrame.astro';
+import SimplexPathDemo from '../../components/islands/SimplexPathDemo.tsx';
+
+上一篇證明了 LP 的最佳解一定落在某個頂點上。單體法（simplex method）就是把這件事直接變成一個演算法：從一個頂點出發，每一步都走到目標函數更好的相鄰頂點，直到某個頂點的所有相鄰頂點都不再更好為止。
 
 ## 01 基本解與基
 
-TODO(G)：basic feasible solution、基變數/非基變數的定義。
+把 LP 寫成等式標準式 $Ax = b,\ x \ge 0$（$A$ 是 $m \times n$，$m < n$）。從 $n$ 個變數中選出 $m$ 個當**基變數（basic variables）**、其餘 $n-m$ 個設成 0（非基變數），解出的 $x$ 若滿足 $x \ge 0$，就稱為一個**基本可行解（basic feasible solution, BFS）**。
 
-## 02 進基與出基：pivot 的幾何意義
+可以證明：每個 BFS 恰好對應可行域的一個頂點，反之亦然——這就是為什麼單體法只需要在「基」之間切換，而不用管可行域裡其他無窮多個點。
 
-TODO(G)：沿著多面體的一條邊走到相鄰頂點。
+## 02 進基、出基與 pivot：沿著邊走一步
+
+單體法每一步做的事，就是把某個非基變數換進基（**進基**），同時把某個基變數換出去變成非基（**出基**）——這一次交換稱為一次 **pivot**。幾何上，這正是「從一個頂點，沿著多面體的一條邊，走到相鄰的另一個頂點」。
+
+<InteractiveFrame title="沿著多面體頂點逐步 pivot" tag="SVG · 逐步互動">
+  <SimplexPathDemo client:load />
+  <Fragment slot="caption">
+    固定的目標方向（灰色箭頭）下，從一個刻意選遠的起始頂點出發，按「下一步 pivot」會沿著<b>目標函數會變好</b>的邊移動到相鄰頂點，磚紅色軌跡就是單體法走過的路徑。因為可行域是凸的、目標函數是線性的，這種「貪心走到更好的相鄰頂點」永遠會走到<b>真正的全域最佳解</b>（虛線圈起來的頂點），不會卡在假的局部最佳解。
+  </Fragment>
+</InteractiveFrame>
+
+<Callout type="intu" label="直覺">
+把多面體想成一顆切割寶石，你站在某一個角上，每次都往「看得到的、目標函數更大」的相鄰角走一步——因為整顆寶石是凸的，這樣走永遠不會被卡在半路，最終一定會走到全域最高的那個角。
+</Callout>
 
 ## 03 何時停止：最優性條件
 
-TODO(G)：reduced cost 全部非負（最小化）。
+當目前頂點的所有相鄰頂點都不會讓目標函數變好時，就停止——這時目前的基本可行解就是最佳解。用單體表（simplex tableau）的語言來說，就是所有**化簡成本（reduced cost）**都已經非負（最小化問題）；不需要再检查更遠的頂點，因為 LP 可行域是凸的，區域性的「無法再變好」直接保證全域最佳。
+
+<Callout type="warn" label="注意">
+上面的互動故意用了「貪心一定會找到全域最佳」這件事——但這完全依賴目標函數是<b>線性</b>、可行域是<b>凸多面體</b>。如果目標函數是非凸的（例如某些非線性規劃），同樣的「往鄰居中更好的方向走」策略只能保證找到局部最佳解，不保證是全域最佳解。
+</Callout>
 
 ## 04 退化與 Bland's rule
 
-TODO(G)：簡述循環問題與防止循環的規則，細節可另開一篇。
+實務上偶爾會遇到**退化（degeneracy）**：某個基本可行解對應到超過 $m$ 個約束同時緊繃，導致同一個頂點可能對應多組基，單體法可能在幾組退化的基之間反覆橫跳而不進展（理論上甚至可能循環）。**Bland's rule**（選擇指標最小的變數進基/出基）是一個簡單但能保證避免循環的規則，代價是收斂速度可能變慢；實務上更常用的是其他反循環規則或直接靠數值容忍度繞過。這部分細節留給另一篇專門講。
+
+下一篇會把單體法沿路走過的軌跡串起來，直接證明 LP 的強對偶定理。
