@@ -20,3 +20,9 @@ pnpm-debug.log*
 Thumbs.db
 .vscode/
 .idea/
+
+# 教材原始檔（PPT/PDF/課本掃描）：版權 + 檔案體積考量，不進 git，只留資料夾結構本身。
+教材/待處理/*
+教材/已處理/*
+!教材/待處理/.gitkeep
+!教材/已處理/.gitkeep
